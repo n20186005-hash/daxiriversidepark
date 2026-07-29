@@ -41,10 +41,23 @@ pnpm preview
 
 ## 部署到 Cloudflare Workers
 
+專案使用 `@astrojs/cloudflare` adapter（SSR / `output: 'server'`），**部署前必須先執行 `astro build` 產生 `dist/`**，否則 `wrangler deploy` 會報 `entry-point file not found`。
+
+本地一鍵部署（已內建先 build 再 deploy）：
+
 ```bash
 pnpm exec wrangler login
 pnpm deploy
 ```
+
+### 透過 Cloudflare Git 整合 / CI 部署（重要）
+
+CI 的 deploy command 若直接是 `npx wrangler deploy`，**不會**自動執行構建（`wrangler.jsonc` 裡的 `build.command` 僅供 `wrangler dev`，`wrangler deploy` 不觸發）。請在 Cloudflare 專案 **Settings → Builds & deployments** 設定：
+
+- **Build command（構建命令）**：`pnpm run build`
+- **Deploy command（部署命令）**：`npx wrangler deploy`（或改為 `pnpm run deploy`）
+
+設定完成後重新觸發部署即可。環境需具備 `pnpm`（lockfile 為 pnpm）。
 
 部署完成後，在 Cloudflare Dashboard 的 Workers & Pages → Custom domains 加入：
 
