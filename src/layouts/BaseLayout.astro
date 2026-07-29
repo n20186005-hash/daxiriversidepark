@@ -1,0 +1,141 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { faqs, site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  image = '/images/og-cover.jpg',
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.canonical).toString();
+const ogImage = new URL(image, site.canonical).toString();
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.name,
+    url: site.canonical,
+    inLanguage: 'zh-Hant-TW',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: site.shortName,
+    description,
+    image: [ogImage],
+    isAccessibleForFree: true,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '大鶯路60巷89弄75號',
+      addressLocality: '大溪區',
+      addressRegion: '桃園市',
+      addressCountry: 'TW',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: site.coordinates.lat,
+      longitude: site.coordinates.lng,
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '00:00',
+      closes: '23:59',
+    },
+    touristType: ['親子家庭', '自行車旅客', '野餐旅客', '攝影旅客'],
+    sameAs: [site.officialUrl, site.tourismUrl, site.placeUrl],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-HXM22WWPKP');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.domain} />
+    <meta name="theme-color" content="#315c4c" />
+    <meta name="format-detection" content="telephone=no" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" as="image" href="/images/hero-playground.jpg" fetchpriority="high" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="大溪河濱公園草地與樹林" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+import { gallery } from '../data/site';
+---
+<div class="grid auto-rows-[180px] grid-cols-2 gap-3 md:auto-rows-[240px] md:grid-cols-4">
+  {gallery.map((photo, index) => (
+    <button
+      type="button"
+      class:list={[
+        'gallery-item group relative overflow-hidden rounded-[1.4rem] bg-moss-100 text-left shadow-sm',
+        index === 0 && 'col-span-2 row-span-2',
+        index === 3 && 'md:col-span-2',
+      ]}
+      data-gallery-index={index}
+      aria-label={`放大照片：${photo.caption}`}
+    >
+      <img src={photo.src} alt={photo.alt} width="1280" height="960" loading={index < 2 ? 'eager' : 'lazy'} decoding="async" class="size-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+      <span class="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/[.70] to-transparent p-4 pt-12 text-white">
+        <span class="text-sm font-black">{photo.caption}</span>
+        <span class="grid size-8 place-items-center rounded-full bg-white/[.15] backdrop-blur"><Icon name="camera" size={16} /></span>
+      </span>
+    </button>
+  ))}
+</div>
+
+<dialog id="gallery-dialog" class="m-auto max-h-[94vh] w-[min(94vw,1100px)] overflow-hidden rounded-[1.5rem] border-0 bg-forest-950 p-0 text-white shadow-2xl backdrop:bg-black/[.75]">
+  <div class="relative">
+    <button id="gallery-close" type="button" class="absolute right-3 top-3 z-10 grid size-11 place-items-center rounded-full bg-black/[.45] text-white backdrop-blur" aria-label="關閉照片">
+      <Icon name="close" />
+    </button>
+    <img id="gallery-image" src="" alt="" width="1280" height="960" class="max-h-[78vh] w-full object-contain" />
+    <div class="flex items-center justify-between gap-4 p-4 sm:p-5">
+      <p id="gallery-caption" class="font-black"></p>
+      <span id="gallery-count" class="text-sm text-white/[.55]"></span>
+    </div>
+  </div>
+</dialog>
+
+<script define:vars={{ photos: gallery }}>
+  const dialog = document.querySelector('#gallery-dialog');
+  const image = document.querySelector('#gallery-image');
+  const caption = document.querySelector('#gallery-caption');
+  const count = document.querySelector('#gallery-count');
+  const close = document.querySelector('#gallery-close');
+  const items = document.querySelectorAll('[data-gallery-index]');
+
+  const openPhoto = (index) => {
+    const photo = photos[index];
+    if (!photo || !(dialog instanceof HTMLDialogElement) || !(image instanceof HTMLImageElement)) return;
+    image.src = photo.src;
+    image.alt = photo.alt;
+    if (caption) caption.textContent = photo.caption;
+    if (count) count.textContent = `${index + 1} / ${photos.length}`;
+    dialog.showModal();
+  };
+
+  items.forEach((item) => item.addEventListener('click', () => openPhoto(Number(item.dataset.galleryIndex))));
+  close?.addEventListener('click', () => dialog instanceof HTMLDialogElement && dialog.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog && dialog instanceof HTMLDialogElement) dialog.close();
+  });
+</script>

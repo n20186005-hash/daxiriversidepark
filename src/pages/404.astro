@@ -1,0 +1,15 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+<BaseLayout title="找不到頁面｜大溪河濱公園旅遊指南" description="找不到指定頁面，返回大溪河濱公園完整攻略。" noindex={true}>
+  <section class="grid min-h-[80vh] place-items-center bg-sand-100 px-5 pb-20 pt-32 text-center">
+    <div class="max-w-xl">
+      <span class="mx-auto grid size-20 place-items-center rounded-[2rem] bg-forest-800 text-3xl font-black text-white">404</span>
+      <h1 class="mt-7 text-4xl font-black tracking-tight text-forest-950">這條步道暫時走不通</h1>
+      <p class="mt-4 leading-8 text-slate-600">你開啟的頁面不存在，回到首頁查看停車、遊具、園區地圖與順遊行程。</p>
+      <a href="/" class="btn-primary mt-7">返回首頁 <Icon name="arrow" size={17} /></a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,88 @@
+---
+import Icon from './Icon.astro';
+import { routes } from '../data/site';
+---
+<div class="soft-card overflow-hidden rounded-[2rem]">
+  <div class="border-b border-forest-800/[.10] bg-moss-100/[.65] p-3 sm:p-4">
+    <div class="grid grid-cols-3 gap-2" role="tablist" aria-label="選擇停留時間">
+      {routes.map((route, index) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${route.id}`}
+          aria-controls={`panel-${route.id}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          data-route-tab={route.id}
+          class:list={[
+            'route-tab min-h-12 rounded-2xl px-3 text-sm font-black transition',
+            index === 0 ? 'bg-forest-800 text-white shadow-lg' : 'bg-white/[.60] text-forest-800 hover:bg-white',
+          ]}
+        >
+          {route.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {routes.map((route, routeIndex) => (
+    <section
+      id={`panel-${route.id}`}
+      role="tabpanel"
+      aria-labelledby={`tab-${route.id}`}
+      data-route-panel={route.id}
+      class:list={['p-5 sm:p-8 lg:p-10', routeIndex !== 0 && 'hidden']}
+    >
+      <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <p class="mb-2 text-xs font-black tracking-[.18em] text-cypress-600">建議行程</p>
+          <h3 class="text-2xl font-black tracking-tight text-forest-950 sm:text-3xl">{route.title}</h3>
+          <p class="mt-2 max-w-xl leading-7 text-slate-600">{route.summary}</p>
+        </div>
+        <span class="inline-flex w-fit items-center gap-2 rounded-full bg-sand-100 px-4 py-2 text-sm font-black text-forest-800">
+          <Icon name="clock" size={17} /> {route.label}
+        </span>
+      </div>
+      <ol class="relative grid gap-4 before:absolute before:bottom-6 before:left-[18px] before:top-6 before:w-px before:bg-forest-800/[.15] lg:grid-cols-4 lg:before:hidden">
+        {route.steps.map((step, index) => (
+          <li class="relative grid grid-cols-[38px_1fr] gap-4 lg:block">
+            <span class="relative z-10 grid size-9 place-items-center rounded-full bg-forest-800 text-sm font-black text-white shadow-lg lg:mb-5">{index + 1}</span>
+            <div>
+              <span class="text-xs font-black tracking-wide text-cypress-600">{step.time}</span>
+              <h4 class="mt-1 font-black text-forest-950">{step.title}</h4>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-route-tab]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-route-panel]'));
+
+  const activate = (id: string) => {
+    tabs.forEach((tab) => {
+      const active = tab.dataset.routeTab === id;
+      tab.setAttribute('aria-selected', String(active));
+      tab.classList.toggle('bg-forest-800', active);
+      tab.classList.toggle('text-white', active);
+      tab.classList.toggle('shadow-lg', active);
+      tab.classList.toggle('bg-white/[.60]', !active);
+      tab.classList.toggle('text-forest-800', !active);
+    });
+    panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.routePanel !== id));
+  };
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activate(tab.dataset.routeTab ?? 'quick'));
+    tab.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'ArrowRight' ? (index + 1) % tabs.length : (index - 1 + tabs.length) % tabs.length;
+      tabs[next]?.focus();
+      activate(tabs[next]?.dataset.routeTab ?? 'quick');
+    });
+  });
+</script>

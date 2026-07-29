@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest-950: #183128;
+  --color-forest-900: #23463a;
+  --color-forest-800: #315c4c;
+  --color-forest-700: #3f6f5d;
+  --color-forest-600: #5a8874;
+  --color-moss-100: #e7eee2;
+  --color-moss-200: #d6e3d0;
+  --color-cypress-500: #b85f42;
+  --color-cypress-600: #9f4d34;
+  --color-sand-50: #fbfaf6;
+  --color-sand-100: #f7f4ec;
+  --color-sand-200: #eee8dc;
+  --color-lake-100: #e2eff0;
+  --color-ink-900: #213029;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  font-family: var(--font-sans);
+  background: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --header-height: 72px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 18px);
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 12% 3%, rgba(214, 227, 208, .56), transparent 30rem),
+    var(--color-sand-50);
+}
+
+body::selection { background: #d8e8dd; color: #183128; }
+
+img { display: block; max-width: 100%; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; }
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  border-radius: 999px;
+  background: #183128;
+  color: white;
+  padding: .75rem 1rem;
+  font-weight: 700;
+}
+.skip-link:focus { top: 1rem; }
+
+.container-page {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
+}
+
+.section-pad { padding-block: clamp(4.5rem, 8vw, 7.5rem); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .85rem;
+  color: var(--color-cypress-600);
+  font-size: .78rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.8rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.section-title {
+  max-width: 780px;
+  font-size: clamp(2rem, 4.7vw, 3.65rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  font-weight: 900;
+  color: var(--color-forest-950);
+}
+
+.section-lead {
+  max-width: 700px;
+  margin-top: 1rem;
+  color: #53625a;
+  font-size: clamp(1rem, 1.7vw, 1.14rem);
+  line-height: 1.9;
+}
+
+.glass-card {
+  background: rgba(255,255,255,.8);
+  border: 1px solid rgba(255,255,255,.62);
+  box-shadow: 0 22px 60px rgba(24, 49, 40, .10);
+  backdrop-filter: blur(16px);
+}
+
+.soft-card {
+  border: 1px solid rgba(49, 92, 76, .12);
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 18px 48px rgba(24,49,40,.06);
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border-radius: 999px;
+  padding: .75rem 1.15rem;
+  font-size: .92rem;
+  font-weight: 800;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn-primary { background: var(--color-forest-800); color: white; box-shadow: 0 12px 30px rgba(49,92,76,.22); }
+.btn-primary:hover { transform: translateY(-2px); background: var(--color-forest-900); box-shadow: 0 16px 34px rgba(49,92,76,.28); }
+.btn-secondary { background: white; color: var(--color-forest-900); border: 1px solid rgba(49,92,76,.18); }
+.btn-secondary:hover { transform: translateY(-2px); border-color: rgba(49,92,76,.38); }
+.btn-ghost { color: var(--color-forest-800); padding-inline: .6rem; }
+.btn-ghost:hover { background: var(--color-moss-100); }
+
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(184, 95, 66, .5);
+  outline-offset: 3px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+@media (max-width: 767px) {
+  :root { --header-height: 64px; }
+  .container-page { width: min(100% - 1.25rem, 1180px); }
+}
