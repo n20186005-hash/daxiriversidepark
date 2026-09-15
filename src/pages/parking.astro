@@ -7,6 +7,7 @@ import {
   parkingAlternatives,
   parkingSteps,
   parkingFaqs,
+  oldStreetParkingScenarios,
   site,
 } from '../data/site';
 
@@ -17,6 +18,7 @@ const toc = [
   { id: 'parking-timing', label: '車位與離峰時段' },
   { id: 'parking-entrance', label: '入口與導航' },
   { id: 'parking-alternatives', label: '替代停車方案' },
+  { id: 'parking-oldstreet', label: '大溪老街停車' },
   { id: 'parking-transit', label: '大眾運輸' },
   { id: 'parking-notes', label: '停車注意事項' },
 ];
@@ -226,6 +228,49 @@ const transitOptions = [
         <Icon name="info" size={22} class="mt-0.5 shrink-0 text-cypress-600" />
         <p class="mt-2 text-sm leading-7 text-slate-600 sm:mt-0">
           <strong class="text-cypress-600">請勿違規停車：</strong>巷道與農路是當地居民日常動線，佔用可能影響消防與救護通行。遇管制時請依現場指揮改停替代車位，或改搭大眾運輸。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-oldstreet" class="section-pad bg-sand-100">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">老街與周邊</p>
+        <h2 class="section-title">大溪老街停車場：免費車位與園區車位怎麼選？</h2>
+        <p class="section-lead">
+          「大溪老街停車免費嗎」是搜尋資料裡明確出現的查詢。實務上大溪老街商圈周邊以民營收費停車場與路邊格位為主，免費車位數量並不固定；如果你要的就是免費停車，園區附設的停車空間通常是最直接的答案。
+        </p>
+      </div>
+
+      <div class="reveal mt-10 overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[700px] text-left">
+            <caption class="sr-only">大溪老街與園區停車選擇建議</caption>
+            <thead class="bg-moss-100 text-xs font-black tracking-wider text-forest-900">
+              <tr>
+                <th class="px-5 py-4">行程重心</th>
+                <th class="px-5 py-4">建議停哪裡</th>
+                <th class="px-5 py-4">說明</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-forest-800/[.08]">
+              {oldStreetParkingScenarios.map((row) => (
+                <tr class="text-sm">
+                  <th class="px-5 py-5 align-top font-black text-forest-950">{row.focus}</th>
+                  <td class="px-5 py-5 align-top font-black text-forest-800">{row.where}</td>
+                  <td class="px-5 py-5 align-top text-xs leading-6 text-slate-500">{row.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="reveal mt-6 rounded-[1.6rem] border border-cypress-500/[.18] bg-[#fff8f4] p-5 sm:flex sm:items-start sm:gap-4">
+        <Icon name="info" size={22} class="mt-0.5 shrink-0 text-cypress-600" />
+        <p class="mt-2 text-sm leading-7 text-slate-600 sm:mt-0">
+          <strong class="text-cypress-600">免費車位不保證：</strong>老街與園區的費率、車位數與當日管制都可能調整，本站不宣稱任何車位永久免費。出發前請先確認現場告示，或改搭公車、騎 YouBike，把找車位的時間留給行程。
         </p>
       </div>
     </div>
