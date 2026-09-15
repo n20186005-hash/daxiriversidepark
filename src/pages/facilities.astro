@@ -1,0 +1,232 @@
+---
+import GuideLayout from '../layouts/GuideLayout.astro';
+import Icon from '../components/Icon.astro';
+import { facilityDetails, facilitiesFaqs, site } from '../data/site';
+
+export const prerender = true;
+
+const toc = [
+  { id: 'facility-overview', label: '設施一覽' },
+  { id: 'playground', label: '海盜船遊戲場' },
+  { id: 'restroom-shade', label: '廁所與遮陽' },
+  { id: 'lawn-picnic', label: '草地與野餐' },
+  { id: 'hours-fees', label: '開放時間與費用' },
+  { id: 'not-provided', label: '園內沒有的設施' },
+];
+
+const hoursFacts = [
+  { icon: 'clock', title: '全區 24 小時開放', detail: '官方標示全區 24 小時開放，屬戶外開放空間，沒有閉園廣播。' },
+  { icon: 'check', title: '免費入園、免門票', detail: '園區免費入園，現場沒有售票處，也不需要事先預約。' },
+  { icon: 'inclusive', title: '設有無障礙廁所', detail: '官方設施資料列有一般廁所與無障礙廁所，推車與輪椅可沿主要步道移動。' },
+  { icon: 'leaf', title: '園區面積約 6.9 公頃', detail: '以草地、樹林、步道與水岸組成，走完一圈需要預留時間與飲水。' },
+] as const;
+---
+
+<GuideLayout topicId="facilities" faqs={facilitiesFaqs} toc={toc}>
+  <section id="facility-overview" class="section-pad bg-sand-50">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">設施一覽</p>
+        <h2 class="section-title">園區有什麼設施？逐項說明</h2>
+        <p class="section-lead">
+          共八項主要設施與空間，包含遊具、自行車場、停車、廁所、遮陽、草地、步道，以及園內沒有提供的服務。
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {facilityDetails.map((item) => (
+          <article class="reveal soft-card flex flex-col rounded-[1.6rem] p-6">
+            <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name={item.icon} size={23} /></span>
+            <h3 class="mt-5 text-lg font-black text-forest-950">{item.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{item.detail}</p>
+            <p class="mt-4 border-t border-forest-800/[.08] pt-4 text-xs leading-6 text-slate-500">{item.note}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="playground" class="section-pad bg-white">
+    <div class="container-page grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="reveal overflow-hidden rounded-[2rem] border border-forest-800/[.12]">
+        <img
+          src="/images/pirate-playground.webp"
+          alt={`大溪河濱公園海盜船共融遊戲場遊具（${site.city}，${site.state}）`}
+          width="960"
+          height="720"
+          loading="lazy"
+          decoding="async"
+          class="h-64 w-full object-cover sm:h-80"
+        />
+      </div>
+
+      <div class="reveal">
+        <p class="eyebrow">遊戲場</p>
+        <h2 class="section-title">海盜船共融遊戲場</h2>
+        <p class="mt-6 text-sm leading-8 text-slate-600">
+          整座遊戲場以海盜船為主題，結合攀爬、繩橋與滑梯，是園區最明顯的地標，也是多數家庭專程前來的原因。
+        </p>
+        <ul class="mt-6 space-y-3">
+          {[
+            '海盜船主題遊具：攀爬、繩橋與滑梯組合，挑戰性比一般罐頭遊具高。',
+            '共融遊具：鳥巢式鞦韆、旋轉盤、音樂牆板與傳聲筒等。',
+            '官方標示多項遊具適齡 2–12 歲，幼童務必由成人近距離陪同。',
+            '遮蔭有限，夏季建議避開正午時段並自備飲水。',
+          ].map((tip) => (
+            <li class="flex items-start gap-3 text-sm leading-7 text-slate-600">
+              <Icon name="check" size={17} class="mt-1.5 shrink-0 text-forest-700" /> {tip}
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm leading-7 text-slate-600">
+          遊戲場旁就是
+          <a href="/bike" class="font-black text-forest-800 underline underline-offset-4">兒童自行車訓練場</a>，可以一次安排兩種放電活動。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="restroom-shade" class="section-pad bg-sand-100">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">公共服務</p>
+        <h2 class="section-title">廁所、遮陽亭棚與休憩空間</h2>
+        <p class="section-lead">
+          帶孩子或長輩同行時，這幾項是最實用的設施。抵達後先確認廁所與亭棚位置，動線安排會順很多。
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        <article class="reveal soft-card rounded-[1.6rem] p-6">
+          <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name="restroom" size={23} /></span>
+          <h3 class="mt-5 text-lg font-black text-forest-950">廁所與無障礙廁所</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-600">
+            官方設施資料列有一般廁所及無障礙廁所，親子與行動不便旅客可安心使用。位置與開放狀況會因維護調整，以現場標示為準。
+          </p>
+          <img src="/images/restroom.webp" alt="大溪河濱公園廁所設施" width="640" height="480" loading="lazy" decoding="async" class="mt-5 h-40 w-full rounded-[1.2rem] object-cover" />
+        </article>
+
+        <article class="reveal soft-card rounded-[1.6rem] p-6">
+          <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name="shade" size={23} /></span>
+          <h3 class="mt-5 text-lg font-black text-forest-950">遮陽亭棚與樹蔭</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-600">
+            園內有亭棚、樹蔭與座椅可供休息，適合野餐後乘涼或短暫避開日照。開闊草坪區仍偏曬，請自備遮陽帽與飲水。
+          </p>
+          <img src="/images/pavilion.webp" alt="大溪河濱公園遮陽亭棚" width="640" height="480" loading="lazy" decoding="async" class="mt-5 h-40 w-full rounded-[1.2rem] object-cover" />
+        </article>
+      </div>
+
+      <p class="reveal mt-6 text-sm leading-7 text-slate-600">
+        開車前往的旅客可先看
+        <a href="/parking" class="font-black text-forest-800 underline underline-offset-4">停車與交通指南</a>
+        確認入口與車位時段；需要租車則見
+        <a href="/bike" class="font-black text-forest-800 underline underline-offset-4">租腳踏車與路線</a>。
+      </p>
+    </div>
+  </section>
+
+  <section id="lawn-picnic" class="section-pad bg-white">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">草地與野餐</p>
+        <h2 class="section-title">大草皮野餐與季節景觀</h2>
+        <p class="section-lead">
+          園區約 6.9 公頃，草地開闊，是最受歡迎的野餐空間。也因為空間開放，保暖、遮陽與垃圾處理都要自己負責。
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          {
+            title: '野餐與草地活動',
+            text: '適合鋪野餐墊、吹泡泡、玩球與散步。請勿生火、烤肉或使用營釘破壞草皮。',
+          },
+          {
+            title: '落羽松季節',
+            text: '約 12 月至翌年 1 月是落羽松轉色期，也是園區人潮與車潮最多的時候。',
+          },
+          {
+            title: '拍照裝置',
+            text: '草地上的 LOVE DAXI 字樣裝置是熱門拍照點，清晨與傍晚光線最好。',
+          },
+          {
+            title: '垃圾自行帶走',
+            text: '園區以戶外公園機能為主，垃圾與廚餘請自行打包帶離，維護草地品質。',
+          },
+          {
+            title: '寵物同行',
+            text: '戶外空間可帶寵物，請全程繫繩、自行清理排泄物，並避免進入遊戲場。',
+          },
+          {
+            title: '天候提醒',
+            text: '豪雨、颱風、水位異常或主管機關封閉時請勿進入，24 小時開放不等於天候無虞。',
+          },
+        ].map((item) => (
+          <article class="reveal soft-card rounded-[1.6rem] p-6">
+            <h3 class="text-lg font-black text-forest-950">{item.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{item.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="reveal mt-8 grid gap-4 sm:grid-cols-3">
+        {[
+          { src: '/images/riverside-lawn.webp', alt: '大溪河濱公園開闊草地', caption: '開闊草地' },
+          { src: '/images/love-daxi.webp', alt: '大溪河濱公園 LOVE DAXI 裝置', caption: 'LOVE DAXI 裝置' },
+          { src: '/images/amphitheater.webp', alt: '大溪河濱公園戶外活動空間', caption: '戶外活動空間' },
+        ].map((photo) => (
+          <figure class="overflow-hidden rounded-[1.4rem] border border-forest-800/[.10] bg-sand-50">
+            <img src={photo.src} alt={photo.alt} width="640" height="480" loading="lazy" decoding="async" class="h-40 w-full object-cover" />
+            <figcaption class="px-4 py-3 text-xs font-bold text-slate-500">{photo.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="hours-fees" class="section-pad bg-sand-50">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">開放時間與費用</p>
+        <h2 class="section-title">免費入園、全區 24 小時開放</h2>
+        <p class="section-lead">
+          園區沒有售票處、不需預約。不過「24 小時開放」指的是沒有閉園時間，不代表所有天候與時段都適合活動。
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {hoursFacts.map((fact) => (
+          <article class="reveal soft-card rounded-[1.5rem] p-5">
+            <span class="grid size-11 place-items-center rounded-2xl bg-moss-200 text-forest-800"><Icon name={fact.icon} size={21} /></span>
+            <h3 class="mt-4 text-base font-black text-forest-950">{fact.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{fact.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="not-provided" class="section-pad bg-white">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">行前準備</p>
+        <h2 class="section-title">園內沒有這些設施，請先準備</h2>
+        <p class="section-lead">園區以戶外公園機能為主，不是商場型景區。先確認下列幾項，玩起來會輕鬆很多。</p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          { icon: 'info', title: '沒有常設餐廳或商店', text: '餐飲與點心建議自備，或安排在鄰近的大溪老街用餐。' },
+          { icon: 'droplet', title: '沒有室內遊戲室', text: '活動都在戶外，雨天沒有室內備案，請留意天氣預報。' },
+          { icon: 'training', title: '沒有租車與租裝備服務', text: '自行車與護具需自備，或在大溪老街周邊租借後騎進來。' },
+        ].map((item) => (
+          <article class="reveal rounded-[1.6rem] border border-cypress-500/[.18] bg-[#fff8f4] p-6">
+            <span class="grid size-11 place-items-center rounded-2xl bg-white text-cypress-600"><Icon name={item.icon} size={21} /></span>
+            <h3 class="mt-4 text-base font-black text-forest-950">{item.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</GuideLayout>

@@ -1,9 +1,9 @@
 ---
 import Icon from './Icon.astro';
-import { site } from '../data/site';
+import { site, topicPages } from '../data/site';
 ---
 <footer class="bg-forest-950 pb-24 pt-16 text-white md:pb-12">
-  <div class="container-page grid gap-12 lg:grid-cols-[1.15fr_.85fr]">
+  <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr]">
     <div>
       <div class="mb-5 flex items-center gap-3">
         <span class="grid size-12 place-items-center rounded-2xl bg-white/[.10] ring-1 ring-white/[.15]">
@@ -24,17 +24,43 @@ import { site } from '../data/site';
         <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-black text-forest-950">
           <Icon name="pin" size={16} /> Google Maps 導航
         </a>
+        <a href="/#sources" class="inline-flex items-center gap-2 rounded-full border border-white/[.20] bg-white/[.05] px-4 py-2.5 text-sm font-bold text-white/[.85] transition hover:bg-white/[.10]">
+          資料來源與授權
+        </a>
       </div>
     </div>
 
     <div class="grid gap-8 sm:grid-cols-2">
       <div>
-        <h2 class="mb-4 text-sm font-black tracking-wider text-white">快速連結</h2>
+        <h2 class="mb-4 text-sm font-black tracking-wider text-white">主題專區</h2>
+        <ul class="space-y-4 text-sm text-white/[.60]">
+          <li>
+            <a class="group block hover:text-white" href="/">
+              <span class="font-bold text-white/[.85]">大溪河濱公園總覽</span>
+              <span class="mt-1 block text-xs leading-6 text-white/[.45]">園區地圖、親子玩法與順遊行程</span>
+            </a>
+          </li>
+          {topicPages.map((page) => (
+            <li>
+              <a class="group block hover:text-white" href={page.path}>
+                <span class="font-bold text-white/[.85]">{page.heading}</span>
+                <span class="mt-1 block text-xs leading-6 text-white/[.45]">{page.summary}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-4 text-sm font-black tracking-wider text-white">本站導覽</h2>
         <ul class="space-y-3 text-sm text-white/[.60]">
-          <li><a class="hover:text-white" href="#highlights">景點亮點</a></li>
-          <li><a class="hover:text-white" href="#park-map">園區示意圖</a></li>
-          <li><a class="hover:text-white" href="#transport">交通與停車</a></li>
-          <li><a class="hover:text-white" href="#faq">常見問題</a></li>
+          <li><a class="hover:text-white" href="/#weather">即時天氣</a></li>
+          <li><a class="hover:text-white" href="/#highlights">景點亮點</a></li>
+          <li><a class="hover:text-white" href="/#park-map">園區示意圖</a></li>
+          <li><a class="hover:text-white" href="/#transport">交通與停車</a></li>
+          <li><a class="hover:text-white" href="/#facilities">園區設施</a></li>
+          <li><a class="hover:text-white" href="/#faq">常見問題</a></li>
+          <li><a class="hover:text-white" href="/#google-rating">Google 評分</a></li>
+          <li><a class="hover:text-white" href="/#sources">資料來源</a></li>
         </ul>
       </div>
       <div>
@@ -43,20 +69,40 @@ import { site } from '../data/site';
           <li><a class="inline-flex items-center gap-1 hover:text-white" href={site.officialUrl} target="_blank" rel="noopener noreferrer">樂桃園 P@rk Go <Icon name="external" size={13} /></a></li>
           <li><a class="inline-flex items-center gap-1 hover:text-white" href={site.tourismUrl} target="_blank" rel="noopener noreferrer">桃園觀光導覽網 <Icon name="external" size={13} /></a></li>
           <li><a class="inline-flex items-center gap-1 hover:text-white" href="https://publicart.tyccc.gov.tw/open/" target="_blank" rel="noopener noreferrer">政府網站資料開放宣告 <Icon name="external" size={13} /></a></li>
+          <li><a class="inline-flex items-center gap-1 hover:text-white" href={site.reviewsUrl} target="_blank" rel="noopener noreferrer">Google 地圖評論頁 <Icon name="external" size={13} /></a></li>
           <li>照片：桃園市政府工務局</li>
         </ul>
       </div>
     </div>
   </div>
+
+  <div class="container-page mt-10 rounded-2xl border border-white/[.10] bg-white/[.04] p-5">
+    <p class="flex items-center gap-2 text-xs font-black tracking-wider text-white/[.55]">
+      <Icon name="camera" size={16} /> 圖片版權
+    </p>
+    <p class="mt-2 text-sm leading-7 text-white/[.65]">
+      {site.imageCopyright}
+    </p>
+    <p class="mt-2 text-xs leading-6 text-white/[.45]">
+      本站評分與評論數同步自 Google 地圖使用者評論（{site.ratingSyncedAt}）；個別評論為原作者與 Google 地圖所有，僅作參考引用。
+    </p>
+  </div>
+
   <div class="container-page mt-12 flex flex-col gap-2 border-t border-white/[.10] pt-6 text-xs text-white/[.40] sm:flex-row sm:items-center sm:justify-between">
     <p>© {new Date().getFullYear()} {site.domain}. 獨立旅遊指南</p>
+    <p class="flex flex-wrap items-center gap-3">
+      <span>資料最後更新：{site.updatedAt}</span>
+      <span aria-hidden="true">·</span>
+      <span>評分同步時間：{site.ratingSyncedAt}</span>
+    </p>
   </div>
 </footer>
 
 <div class="fixed inset-x-0 bottom-0 z-40 border-t border-forest-800/[.10] bg-white/[.92] p-2 shadow-[0_-12px_35px_rgba(24,49,40,.12)] backdrop-blur-xl md:hidden">
   <div class="mx-auto grid max-w-md grid-cols-3 gap-2">
-    <a href="#park-map" class="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-black text-forest-800"><Icon name="map" size={19} />園區地圖</a>
-    <a href="#transport" class="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-black text-forest-800"><Icon name="parking" size={19} />停車交通</a>
+    <a href="/#park-map" class="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-black text-forest-800"><Icon name="map" size={19} />園區地圖</a>
+    <a href="/parking" class="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-black text-forest-800"><Icon name="parking" size={19} />停車交通</a>
     <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl bg-forest-800 text-[11px] font-black text-white"><Icon name="pin" size={19} />開始導航</a>
   </div>
 </div>
+

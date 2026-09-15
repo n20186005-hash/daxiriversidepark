@@ -1,0 +1,38 @@
+---
+interface Breadcrumb {
+  name: string;
+  path?: string;
+}
+
+interface Props {
+  items: readonly Breadcrumb[];
+  tone?: 'dark' | 'light';
+}
+
+const { items, tone = 'light' } = Astro.props;
+const isDark = tone === 'dark';
+---
+<nav aria-label="麵包屑導覽">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold">
+    {items.map((item, index) => (
+      <li class="flex items-center gap-2">
+        {item.path ? (
+          <a
+            href={item.path}
+            class:list={[
+              'underline-offset-4 transition',
+              isDark ? 'text-white/[.70] hover:text-white hover:underline' : 'text-forest-800 hover:underline',
+            ]}
+          >
+            {item.name}
+          </a>
+        ) : (
+          <span aria-current="page" class={isDark ? 'text-white/[.50]' : 'text-slate-500'}>{item.name}</span>
+        )}
+        {index < items.length - 1 && (
+          <span aria-hidden="true" class={isDark ? 'text-white/[.30]' : 'text-slate-400'}>/</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

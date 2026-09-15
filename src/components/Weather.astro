@@ -1,0 +1,373 @@
+---
+import Icon from './Icon.astro';
+import { ALERT_SOURCE, WEATHER_SOURCE } from '../lib/weather';
+import { PARK_TERRAIN, terrainLabel } from '../lib/weather-advice';
+
+const environment = terrainLabel(PARK_TERRAIN);
+
+/** 可用的天氣圖示，於載入後由前端依天氣種類取用。 */
+const weatherIcons = ['sun', 'moon', 'cloud-sun', 'cloud', 'fog', 'rain', 'thunder', 'snow'];
+
+const metrics = [
+  { field: 'feels', label: '體感', icon: 'thermometer' },
+  { field: 'wind', label: '風力', icon: 'wind' },
+  { field: 'rain', label: '降雨機率', icon: 'droplet' },
+  { field: 'uv', label: '紫外線', icon: 'sun' },
+  { field: 'sun', label: '日出／日落', icon: 'clock' },
+];
+
+const adviceCards = [
+  { key: 'outfit', title: '出行穿搭', hint: '今天怎麼穿', icon: 'shirt' },
+  { key: 'plans', title: '遊玩安排', hint: '今天可以做什麼', icon: 'map' },
+  { key: 'items', title: '隨身物品', hint: '出門前記得帶', icon: 'backpack' },
+];
+---
+
+<section id="weather" class="section-pad pt-4 lg:pt-6">
+  <div class="container-page">
+    <div class="reveal grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-end">
+      <div>
+        <p class="eyebrow">即時天氣</p>
+        <h2 class="section-title">出發前先看今天該帶什麼、能玩什麼</h2>
+      </div>
+      <p class="section-lead lg:mb-1">
+        依<strong>{environment}</strong>環境特性與即時預報資料，自動整理成可以直接照著做的建議。天氣資料每小時更新，並以目前觀測值為優先判斷依據。
+      </p>
+    </div>
+
+    <div class="reveal mt-9" data-weather data-weather-endpoint="/api/weather.json">
+      <div class="hidden" data-weather-icons aria-hidden="true">
+        {weatherIcons.map((kind) => <span data-weather-icon={kind}><Icon name={kind} size={28} /></span>)}
+      </div>
+
+      <div class="soft-card rounded-[2rem] p-6 sm:p-9" data-weather-skeleton role="status">
+        <span class="sr-only">天氣資訊載入中，請稍候。</span>
+        <div class="grid gap-8 lg:grid-cols-2">
+          <div class="space-y-4">
+            <div class="h-3.5 w-28 animate-pulse rounded-full bg-moss-200"></div>
+            <div class="h-16 w-44 animate-pulse rounded-2xl bg-moss-200"></div>
+            <div class="h-3.5 w-36 animate-pulse rounded-full bg-moss-200"></div>
+            <div class="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-3">
+              {[0, 1, 2, 3, 4].map(() => <div class="h-16 animate-pulse rounded-2xl bg-moss-100"></div>)}
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            {[0, 1, 2, 3, 4, 5].map(() => <div class="h-4 animate-pulse rounded-full bg-moss-200"></div>)}
+          </div>
+        </div>
+      </div>
+
+      <div hidden class="soft-card rounded-[2rem] p-6 sm:p-9" data-weather-error>
+        <p class="flex items-center gap-2 text-base font-black text-cypress-600">
+          <Icon name="alert" size={19} /> 天氣資料暫時無法取得
+        </p>
+        <p class="mt-3 text-sm leading-7 text-slate-600">
+          即時預報服務目前沒有回應，請稍後重新整理本頁；出發前也建議直接查看
+          <a
+            href={ALERT_SOURCE.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-bold text-forest-800 underline-offset-2 hover:underline">{ALERT_SOURCE.name}</a
+          >
+          的最新天氣資訊。
+        </p>
+      </div>
+
+      <div hidden data-weather-body>
+        <div
+          class="mb-4 rounded-[1.6rem] border-2 border-[#d94f3d] bg-[#fff1ee] p-5 sm:p-6"
+          data-weather-alert
+          hidden
+        >
+          <p class="flex items-center gap-2 text-base font-black text-[#c0341f]">
+            <Icon name="alert" size={20} /> 氣象警報生效中
+          </p>
+          <ul class="mt-3 space-y-2 text-sm font-black leading-7 text-[#8f2a1a]" data-weather-warnings></ul>
+          <p class="mt-3 text-xs leading-6 text-[#a85341]">
+            警報期間請以中央氣象署最新公告為準，優先調整行程並避開山區、溪谷與水域等危險區域。
+          </p>
+        </div>
+
+        <div
+          class="mb-4 rounded-[1.6rem] border border-cypress-500/[.24] bg-[#fff8f4] p-5 sm:p-6"
+          data-weather-risk-card
+          hidden
+        >
+          <p class="flex items-center gap-2 text-sm font-black text-cypress-600"><Icon name="alert" size={18} /> 風險提醒</p>
+          <ul class="mt-3 space-y-2" data-weather-list="risks"></ul>
+        </div>
+
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+          <div class="soft-card overflow-hidden rounded-[2rem] bg-forest-950 p-6 text-white sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="text-[11px] font-black tracking-[.18em] text-white/[.55]">即時觀測</p>
+              <span
+                class="rounded-full bg-white/[.12] px-3 py-1.5 text-[11px] font-black text-white/[.82]"
+                data-weather-calm-chip
+                hidden>目前無氣象警報</span
+              >
+            </div>
+
+            <div class="mt-5 flex items-center gap-5">
+              <span
+                class="grid size-[84px] shrink-0 place-items-center rounded-[1.5rem] bg-white/[.10] text-[#f0baa5]"
+                data-weather-current-icon><Icon name="cloud-sun" size={30} /></span
+              >
+              <div class="min-w-0">
+                <p class="text-5xl font-black leading-none tracking-tight">
+                  <span data-weather-field="temp">--</span><span class="align-top text-2xl">°C</span>
+                </p>
+                <p class="mt-2 text-lg font-black text-white/[.88]" data-weather-field="text">--</p>
+                <p class="mt-1 text-xs font-bold text-white/[.52]" data-weather-field="range">--</p>
+              </div>
+            </div>
+
+            <dl class="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+              {
+                metrics.map((metric) => (
+                  <div class="rounded-2xl bg-white/[.08] p-3">
+                    <dt class="flex items-center gap-1.5 text-[10px] font-black tracking-[.12em] text-white/[.55]">
+                      <Icon name={metric.icon} size={13} /> {metric.label}
+                    </dt>
+                    <dd class="mt-1.5 text-sm font-black text-white" data-weather-metric={metric.field}>--</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+
+          <div class="soft-card rounded-[2rem] p-6 sm:p-8">
+            <p class="eyebrow">今天可以做什麼</p>
+            <p class="text-base font-bold leading-8 text-forest-950" data-weather-field="summary">
+              正在依天氣資料整理建議…
+            </p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-3">
+              {
+                adviceCards.map((card) => (
+                  <div data-advice-card data-advice-key={card.key}>
+                    <p class="flex items-center gap-2 text-sm font-black text-forest-950">
+                      <span class="grid size-8 place-items-center rounded-xl bg-moss-100 text-forest-800">
+                        <Icon name={card.icon} size={17} />
+                      </span>
+                      {card.title}
+                    </p>
+                    <p class="mt-1.5 text-[11px] font-bold tracking-wider text-slate-400">{card.hint}</p>
+                    <ul
+                      class:list={[
+                        'mt-3',
+                        card.key === 'items' ? 'flex flex-wrap gap-2' : 'space-y-2',
+                      ]}
+                      data-weather-list={card.key}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-[2rem] border border-forest-800/[.12] bg-white p-5 shadow-[0_18px_48px_rgba(24,49,40,.06)] sm:p-7">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="flex items-center gap-2 text-sm font-black text-forest-950">
+              <Icon name="clock" size={18} /> 未來 7 天預報
+            </p>
+            <p class="text-[11px] font-bold tracking-wider text-slate-400" data-weather-field="updated"></p>
+          </div>
+
+          <template data-weather-day-template>
+            <li class="w-[112px] shrink-0 snap-start rounded-[1.25rem] border border-forest-800/[.12] bg-sand-50 p-3 text-center">
+              <p class="text-xs font-black text-forest-950" data-day="label"></p>
+              <p class="mt-0.5 text-[10px] font-bold tracking-wider text-slate-400" data-day="short"></p>
+              <span class="mx-auto mt-2 grid size-10 place-items-center rounded-2xl bg-moss-100 text-forest-800" data-day="icon"
+              ></span>
+              <p class="mt-2 text-[11px] font-bold text-slate-600" data-day="text"></p>
+              <p class="mt-2 text-sm font-black text-forest-950">
+                <span data-day="max"></span>°<span class="font-bold text-slate-400">／<span data-day="min"></span>°</span>
+              </p>
+              <p class="mt-1.5 text-[10px] font-black text-[#2e6f86]" data-day="rain"></p>
+            </li>
+          </template>
+
+          <ol class="mt-5 flex snap-x gap-2.5 overflow-x-auto pb-2" data-weather-days></ol>
+        </div>
+
+        <p class="mt-4 text-xs leading-6 text-slate-500">
+          天氣資料來源：<a
+            href={WEATHER_SOURCE.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-bold text-forest-800 underline-offset-2 hover:underline">{WEATHER_SOURCE.name}</a
+          >（{WEATHER_SOURCE.license} 授權）；氣象警報來源：<a
+            href={ALERT_SOURCE.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-bold text-forest-800 underline-offset-2 hover:underline">{ALERT_SOURCE.name}</a
+          >。預報資料僅供行前參考，實際天氣以中央氣象署最新發布與現場公告為準。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector('[data-weather]');
+
+  if (root instanceof HTMLElement) {
+    const endpoint = root.dataset.weatherEndpoint || '/api/weather.json';
+    const skeleton = root.querySelector('[data-weather-skeleton]');
+    const errorBox = root.querySelector('[data-weather-error]');
+    const body = root.querySelector('[data-weather-body]');
+    const alertBox = root.querySelector('[data-weather-alert]');
+    const warningList = root.querySelector('[data-weather-warnings]');
+    const calmChip = root.querySelector('[data-weather-calm-chip]');
+    const riskCard = root.querySelector('[data-weather-risk-card]');
+    const currentIcon = root.querySelector('[data-weather-current-icon]');
+    const daysList = root.querySelector('[data-weather-days]');
+    const dayTemplate = root.querySelector('[data-weather-day-template]');
+
+    const round = (value) => Math.round(Number(value) || 0);
+
+    const setField = (name, value) => {
+      const node = root.querySelector(`[data-weather-field="${name}"]`);
+      if (node) node.textContent = value;
+    };
+
+    const setMetric = (name, value) => {
+      const node = root.querySelector(`[data-weather-metric="${name}"]`);
+      if (node) node.textContent = value;
+    };
+
+    const makeIcon = (kind) => {
+      const source = root.querySelector(`[data-weather-icon="${kind}"] svg`);
+      return source ? source.cloneNode(true) : null;
+    };
+
+    /** 依條件決定顯示哪些項目；不符條件的內容不會出現在畫面上。 */
+    const fillList = (key, values) => {
+      const list = root.querySelector(`[data-weather-list="${key}"]`);
+      if (!list) return 0;
+      const entries = Array.isArray(values) ? values.filter((value) => typeof value === 'string' && value) : [];
+      list.textContent = '';
+      entries.forEach((value) => {
+        const li = document.createElement('li');
+        if (key === 'items') {
+          li.className = 'rounded-full bg-moss-100 px-3 py-1.5 text-xs font-black text-forest-800';
+          li.textContent = value;
+        } else {
+          li.className = 'flex gap-2.5 text-sm leading-7 text-slate-600';
+          const dot = document.createElement('span');
+          dot.className = 'mt-[11px] size-1.5 shrink-0 rounded-full bg-forest-700';
+          const text = document.createElement('span');
+          text.textContent = value;
+          li.append(dot, text);
+        }
+        list.append(li);
+      });
+      return entries.length;
+    };
+
+    const renderDays = (days) => {
+      if (!(daysList instanceof HTMLElement) || !(dayTemplate instanceof HTMLTemplateElement)) return;
+      daysList.textContent = '';
+      if (!Array.isArray(days)) return;
+
+      days.forEach((day) => {
+        const fragment = dayTemplate.content.cloneNode(true);
+        const item = fragment.querySelector('li');
+        if (!item) return;
+
+        const set = (key, value) => {
+          const node = item.querySelector(`[data-day="${key}"]`);
+          if (node) node.textContent = value;
+        };
+
+        set('label', day.label || day.weekday || '');
+        set('short', day.short || '');
+        set('text', day.text || '');
+        set('max', String(round(day.max)));
+        set('min', String(round(day.min)));
+        set('rain', `降雨 ${round(day.precipProb)}%`);
+
+        const slot = item.querySelector('[data-day="icon"]');
+        const icon = makeIcon(day.kind);
+        if (slot && icon) {
+          slot.textContent = '';
+          slot.append(icon);
+        }
+
+        daysList.append(fragment);
+      });
+    };
+
+    const render = (data) => {
+      const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+      const advice = data.advice || {};
+
+      if (warnings.length > 0) {
+        if (warningList instanceof HTMLElement) {
+          warningList.textContent = '';
+          warnings.forEach((title) => {
+            const li = document.createElement('li');
+            li.textContent = String(title);
+            warningList.append(li);
+          });
+        }
+        if (alertBox instanceof HTMLElement) alertBox.hidden = false;
+        if (calmChip instanceof HTMLElement) calmChip.hidden = true;
+      } else if (calmChip instanceof HTMLElement) {
+        // 僅在已設定官方警報來源時，才顯示「目前無警報」。
+        calmChip.hidden = data.alertsEnabled !== true;
+      }
+
+      const riskCount = fillList('risks', advice.risks);
+      if (riskCard instanceof HTMLElement) riskCard.hidden = riskCount === 0;
+
+      if (currentIcon instanceof HTMLElement) {
+        const icon = makeIcon(data.now.kind);
+        if (icon) {
+          currentIcon.textContent = '';
+          currentIcon.append(icon);
+        }
+      }
+
+      setField('temp', String(round(data.now.temp)));
+      setField('text', data.now.text || '');
+      setField('range', `今天 ${round(data.today.min)}–${round(data.today.max)}°C`);
+      setField('summary', advice.summary || '');
+      setField('updated', `更新時間 ${data.updatedAt}（台北時間）`);
+
+      setMetric('feels', `${round(data.now.feelsLike)}°C`);
+      setMetric('wind', data.today.windText || '--');
+      setMetric('rain', `${round(data.today.precipProb)}%`);
+      setMetric('uv', data.today.uvText || '--');
+      setMetric('sun', `${data.today.sunrise || '--'}／${data.today.sunset || '--'}`);
+
+      ['outfit', 'plans', 'items'].forEach((key) => {
+        const count = fillList(key, advice[key]);
+        const card = root.querySelector(`[data-advice-key="${key}"]`);
+        if (card instanceof HTMLElement) card.hidden = count === 0;
+      });
+
+      renderDays(data.days);
+    };
+
+    const load = async () => {
+      try {
+        const response = await fetch(endpoint, { headers: { accept: 'application/json' } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        if (!data || data.ok !== true) throw new Error('unexpected payload');
+
+        render(data);
+        if (skeleton instanceof HTMLElement) skeleton.hidden = true;
+        if (body instanceof HTMLElement) body.hidden = false;
+      } catch {
+        if (skeleton instanceof HTMLElement) skeleton.hidden = true;
+        if (errorBox instanceof HTMLElement) errorBox.hidden = false;
+      }
+    };
+
+    load();
+  }
+</script>

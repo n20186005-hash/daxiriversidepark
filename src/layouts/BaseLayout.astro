@@ -2,13 +2,25 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { faqs, site } from '../data/site';
+// 匯入時改名，因為 BaseLayout 需要接受各頁覆寫的 faqs 屬性。
+import { faqs as siteFaqs, site } from '../data/site';
+
+interface Breadcrumb {
+  name: string;
+  path?: string;
+}
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   noindex?: boolean;
+  /** 各頁麵包屑；預設為首頁的地理歸屬層級。 */
+  breadcrumbs?: readonly Breadcrumb[];
+  /** 各頁 FAQ 結構化資料；主題專頁會帶入自己的問答。 */
+  faqs?: readonly { question: string; answer: string }[];
+  /** 首屏要預先載入的圖片；沒有首屏大圖時傳 false。 */
+  preloadImage?: string | false;
 }
 
 const {
@@ -16,10 +28,25 @@ const {
   description = site.description,
   image = '/images/og-cover.jpg',
   noindex = false,
+  breadcrumbs = [
+    { name: site.fullName, path: '/' },
+    { name: site.city },
+    { name: site.state },
+    { name: site.country },
+  ],
+  faqs = siteFaqs,
+  preloadImage = '/images/hero-playground.jpg',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.canonical).toString();
 const ogImage = new URL(image, site.canonical).toString();
+
+const attractionId = 'https://daxiriversidepark.com/#attraction';
+// og／twitter 的標題與描述與 <title>、meta description 保持一致。
+// 原本的英文摘要與中文查詢語意不符，是桌面端曝光 66 次卻 0 點擊的可能原因之一。
+const ogImageAlt = `${site.fullName} 免費停車場、海盜船遊具與兒童單車場實景（${site.city}，${site.state}）`;
+const ogShortTitle = title;
+const ogShortDescription = description;
 
 const jsonLd = [
   {
@@ -31,17 +58,24 @@ const jsonLd = [
   },
   {
     '@context': 'https://schema.org',
-    '@type': 'TouristAttraction',
-    name: site.shortName,
+    // 同時標示 TouristAttraction 與 Park：Park 是 Google 對地標型公園最直接的型別，
+    // 有利於與 Google 地圖上的「大溪河濱公園」商家頁綁定。
+    '@type': ['TouristAttraction', 'Park'],
+    '@id': attractionId,
+    name: site.fullName,
+    alternateName: [site.shortName, 'Daxi Riverside Park', `${site.city} ${site.fullName}`],
     description,
+    url: site.canonical,
     image: [ogImage],
     isAccessibleForFree: true,
+    publicAccess: true,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '大鶯路60巷89弄75號',
-      addressLocality: '大溪區',
-      addressRegion: '桃園市',
-      addressCountry: 'TW',
+      streetAddress: site.streetAddress,
+      addressLocality: site.city,
+      addressRegion: site.state,
+      postalCode: site.postalCode,
+      addressCountry: site.countryCode,
     },
     geo: {
       '@type': 'GeoCoordinates',
@@ -55,10 +89,58 @@ const jsonLd = [
       closes: '23:59',
     },
     touristType: ['親子家庭', '自行車旅客', '野餐旅客', '攝影旅客'],
-    sameAs: [site.officialUrl, site.tourismUrl, site.placeUrl],
+    hasMap: site.mapsUrl,
+    sameAs: [site.mapsUrl, site.tourismUrl, site.officialUrl, site.placeUrl],
+    // 對應搜尋需求最高的設施查詢（停車場、YouBike、遊具、野餐草地）。
+    amenityFeature: [
+      { '@type': 'LocationFeatureSpecification', name: '停車場', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '公共廁所', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '無障礙廁所', value: true },
+      { '@type': 'LocationFeatureSpecification', name: 'YouBike 公共自行車站', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '兒童遊戲場', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '自行車訓練場', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '野餐草地', value: true },
+      { '@type': 'LocationFeatureSpecification', name: '遮陽亭棚', value: true },
+    ],
   },
   {
     '@context': 'https://schema.org',
+    '@type': 'Place',
+    '@id': `${site.canonical}#place`,
+    name: site.fullName,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.streetAddress,
+      addressLocality: site.city,
+      addressRegion: site.state,
+      postalCode: site.postalCode,
+      addressCountry: site.countryCode,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: site.coordinates.lat,
+      longitude: site.coordinates.lng,
+    },
+    containedInPlace: {
+      '@type': 'City',
+      name: `${site.city}, ${site.state}, ${site.country}`,
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    // 麵包屑由各頁提供：首頁是地理歸屬層級，主題專頁是「總覽 → 主題」。
+    // 可見的麵包屑與這份結構化資料共用同一組資料，避免兩者不一致。
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      ...(crumb.path ? { item: new URL(crumb.path, site.canonical).toString() } : {}),
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    // FAQ 由各頁提供：首頁是全站常見問題，主題專頁是自己的問答。
     '@type': 'FAQPage',
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
@@ -70,17 +152,20 @@ const jsonLd = [
     })),
   },
 ];
+
+// Note: Google Maps 評分與評論數僅在頁面視覺區塊呈現與註明來源，
+// 不嵌入 JSON-LD，以避免 Google 結構化資料政策中對評論摘要的限制。
 ---
 <!doctype html>
 <html lang="zh-Hant-TW">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
-    <script is:inline>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.ga4Id}`}></script>
+    <script is:inline define:vars={{ ga4Id: site.ga4Id }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() { window.dataLayer.push(arguments); }
       gtag('js', new Date());
-      gtag('config', 'G-HXM22WWPKP');
+      gtag('config', ga4Id);
     </script>
 
     <meta charset="UTF-8" />
@@ -91,27 +176,39 @@ const jsonLd = [
     <meta name="author" content={site.domain} />
     <meta name="theme-color" content="#315c4c" />
     <meta name="format-detection" content="telephone=no" />
+    <meta name="rating" content="general" />
+    <meta name="geo.region" content="TW-TAO" />
+    <meta name="geo.placename" content={site.city} />
+    <meta name="geo.position" content={`${site.coordinates.lat};${site.coordinates.lng}`} />
+    <meta name="ICBM" content={`${site.coordinates.lat}, ${site.coordinates.lng}`} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-Hant-TW" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preload" as="image" href="/images/hero-playground.jpg" fetchpriority="high" />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google.com" crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_TW" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={ogShortTitle} />
+    <meta property="og:description" content={ogShortDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="大溪河濱公園草地與樹林" />
+    <meta property="og:image:alt" content={ogImageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   </head>
@@ -136,6 +233,13 @@ const jsonLd = [
         { threshold: 0.12 },
       );
       document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
     </script>
   </body>
 </html>

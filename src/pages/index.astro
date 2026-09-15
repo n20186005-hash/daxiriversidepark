@@ -5,14 +5,22 @@ import Icon from '../components/Icon.astro';
 import ParkMap from '../components/ParkMap.astro';
 import RoutePlanner from '../components/RoutePlanner.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
+import Weather from '../components/Weather.astro';
+import FaqList from '../components/FaqList.astro';
+import TopicNav from '../components/TopicNav.astro';
 import {
   ageGuide,
+  bikeGuide,
   facilities,
   faqs,
+  googleRating,
   highlights,
+  nearbyLandmarks,
   nearbyTrips,
+  parkingGuide,
   quickFacts,
   site,
+  sources,
 } from '../data/site';
 
 const suitable = [
@@ -29,13 +37,18 @@ const notIdeal = [
   '期待大量餐廳、商店或室內設施',
   '只想欣賞無遮擋的壯闊河景',
 ];
+
+const ratingStars = [0, 1, 2, 3, 4];
+const filledStars = Math.round(googleRating.score);
+const partialFraction = googleRating.score - Math.floor(googleRating.score);
+const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評論`;
 ---
 <BaseLayout>
   <section id="top" class="relative min-h-[760px] overflow-hidden bg-forest-950 pt-16 text-white md:min-h-[820px] md:pt-[72px]">
     <div class="absolute inset-0">
       <img
         src="/images/hero-playground.jpg"
-        alt="大溪河濱公園海盜船遊戲場與綠地"
+        alt={`${site.fullName} - Main view in ${site.city}, ${site.country}`}
         width="1200"
         height="675"
         fetchpriority="high"
@@ -52,11 +65,17 @@ const notIdeal = [
           <span class="rounded-full border border-white/[.20] bg-white/[.10] px-3 py-1.5 text-xs font-black tracking-wide backdrop-blur">免費親子景點</span>
           <span class="rounded-full border border-white/[.20] bg-white/[.10] px-3 py-1.5 text-xs font-black tracking-wide backdrop-blur">獨立旅遊指南</span>
         </div>
-        <h1 class="text-[clamp(3.25rem,9vw,7.2rem)] font-black leading-[.92] tracking-[-.065em] text-white">
-          大溪河濱<br /><span class="text-[#e9b29d]">公園</span>
+        <h1 class="text-[clamp(3rem,8.4vw,6.6rem)] font-black leading-[.94] tracking-[-.06em] text-white">
+          大溪河濱公園
         </h1>
+        <p class="mt-4 text-[clamp(1.05rem,2.4vw,1.7rem)] font-black leading-snug tracking-tight text-[#e9b29d]">
+          免費停車場・海盜船遊具・兒童單車場・大草皮野餐
+        </p>
+        <p class="mt-3 text-xs font-black tracking-[.18em] text-white/[.55] sm:text-sm">
+          大溪河濱公園（{site.city}，{site.state}，{site.country}）
+        </p>
         <p class="mt-7 max-w-2xl text-base font-medium leading-8 text-white/[.80] sm:text-lg md:text-xl md:leading-9">
-          一次掌握海盜船遊具、兒童單車場、落羽松、野餐草地、停車入口與大溪老街順遊方式。
+          Welcome to <strong class="text-white">{site.fullName}</strong>，widely recognized as the central <strong class="text-white">{site.shortName}</strong>. Located in the heart of <strong class="text-white">{site.city}</strong>, <strong class="text-white">{site.state}</strong>, <strong class="text-white">{site.country}</strong>, this destination serves as a primary hub for travelers visiting the region.一次掌握海盜船遊具、兒童單車場、落羽松、野餐草地、停車入口與大溪老街順遊方式。
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-white px-6 text-base font-black text-forest-950 shadow-2xl transition hover:-translate-y-1">
@@ -87,6 +106,116 @@ const notIdeal = [
             </div>
           ))}
       </dl>
+    </div>
+  </section>
+
+  <Weather />
+
+  <section id="google-rating" class="container-page pb-12 pt-2 lg:pt-4">
+    <article class="reveal soft-card relative overflow-hidden rounded-[2rem] p-6 sm:p-9">
+      <div class="grid gap-8 lg:grid-cols-[1fr_1.25fr] lg:items-center">
+        <div>
+          <p class="eyebrow">Google 評分</p>
+          <h2 class="section-title">來自 Google 地圖的最新評分</h2>
+          <p class="section-lead mt-4">
+            <strong>{site.fullName}</strong> 於 Google 地圖上的整體平均評分與評論總數，於 {site.ratingSyncedAt} 同步自 Google Maps 商家頁。
+          </p>
+          <p class="mt-3 text-xs leading-6 text-slate-500 sm:text-sm">
+            評分區塊資訊僅作參考；個別評論文字為 Google 地圖使用者原作，著作權歸原作者與 Google 地圖所有。
+          </p>
+        </div>
+        <div class="rounded-[1.6rem] border border-forest-800/[.12] bg-gradient-to-br from-white via-sand-50 to-moss-100 p-6 shadow-[0_18px_40px_rgba(24,49,40,.08)] sm:p-8">
+          <div class="flex flex-wrap items-center gap-5 sm:gap-7">
+            <div class="grid size-[110px] shrink-0 place-items-center rounded-[1.6rem] bg-forest-800 text-white shadow-lg sm:size-[126px]">
+              <div class="text-center">
+                <p class="text-4xl font-black leading-none tracking-tight sm:text-5xl">{googleRating.score.toFixed(1)}</p>
+                <p class="mt-1 text-[10px] font-black tracking-[.18em] text-white/70">/ 5.0</p>
+              </div>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5" aria-label={`平均 ${googleRating.score.toFixed(1)} 顆星`}>
+                {ratingStars.map((i) => {
+                  const isFilled = i < filledStars;
+                  const isPartial = !isFilled && i < Math.ceil(googleRating.score) && partialFraction > 0;
+                  return (
+                    <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true">
+                      <defs>
+                        <linearGradient id={`star-grad-${i}`} x1="0" y1="0" x2="1" y2="0">
+                          <stop offset={`${Math.round(partialFraction * 100)}%`} stop-color="#f59e0b" />
+                          <stop offset={`${Math.round(partialFraction * 100)}%`} stop-color="#e2e8e6" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M12 3.5l2.78 5.63 6.22.9-4.5 4.39 1.06 6.19L12 17.77l-5.56 2.84 1.06-6.19-4.5-4.39 6.22-.9L12 3.5Z" fill={isFilled ? '#f59e0b' : isPartial ? `url(#star-grad-${i})` : '#e2e8e6'} stroke={isFilled ? '#d97706' : isPartial ? '#d97706' : '#cbd5d1'} stroke-width="0.8" />
+                    </svg>
+                  );
+                })}
+              </div>
+              <p class="mt-3 text-2xl font-black tracking-tight text-forest-950">{googleRating.score.toFixed(1)} <span class="text-sm font-bold text-slate-500">/ 5</span></p>
+              <p class="mt-1 text-sm font-black text-forest-800">共 {reviewsLabel}</p>
+              <p class="mt-1 text-[11px] font-bold tracking-wider text-slate-500">資料來源：{googleRating.source}</p>
+            </div>
+          </div>
+          <a href={googleRating.reviewsUrl} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-forest-800 px-5 text-sm font-black text-white shadow transition hover:-translate-y-1 hover:bg-forest-900 sm:w-auto">
+            <Icon name="external" size={16} /> 在 Google 地圖查看全部評論
+          </a>
+          <p class="mt-4 text-xs leading-6 text-slate-500">
+            評分與評論數同步自谷歌地圖（Google Maps）使用者評論 · {site.ratingSyncedAt} · <a href={googleRating.reviewsUrl} target="_blank" rel="noopener noreferrer" class="font-bold text-forest-800 underline-offset-2 hover:underline">點擊查看 Google 地圖全部評論↗</a>
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section id="topics" class="section-pad">
+    <div class="container-page">
+      <TopicNav
+        includeHome={false}
+        title="主題專區：停車、單車與園區設施"
+        lead="這三組需求是本站在搜尋結果中最常被點擊的部分，因此各自獨立成頁把細節做深：停車場與入口導航、租腳踏車與騎乘路線、園區設施與遊具。"
+      />
+    </div>
+  </section>
+
+  <section id="about" class="section-pad pt-0">
+    <div class="container-page">
+      <div class="reveal soft-card overflow-hidden rounded-[2rem] p-6 sm:p-10">
+        <div class="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+          <div>
+            <p class="eyebrow">關於本頁</p>
+            <h2 class="section-title">About {site.fullName}</h2>
+            <p class="section-lead mt-4">
+              <strong>{site.fullName}</strong> 是位於台灣桃園市大溪區大鶯路巷道內的免費河濱公園，亦為大溪地區最具代表性的親子放電據點之一。地理上鄰近 <strong>{nearbyLandmarks[0].name}</strong> 與 <strong>{nearbyLandmarks[1].name}</strong>，常被規劃為半日遊或一日遊的第一站。
+            </p>
+            <nav class="mt-6 flex flex-wrap items-center gap-2 text-xs font-black text-forest-800" aria-label="地理歸屬層級">
+              <span class="rounded-full bg-moss-100 px-3 py-1.5">{site.fullName}</span>
+              <span aria-hidden="true">→</span>
+              <span class="rounded-full bg-moss-100 px-3 py-1.5">{site.city}</span>
+              <span aria-hidden="true">→</span>
+              <span class="rounded-full bg-moss-100 px-3 py-1.5">{site.state}</span>
+              <span aria-hidden="true">→</span>
+              <span class="rounded-full bg-moss-100 px-3 py-1.5">{site.country}</span>
+            </nav>
+          </div>
+          <div>
+            <p class="eyebrow">周邊核心地標</p>
+            <h3 class="text-2xl font-black tracking-tight text-forest-950 sm:text-3xl">當你造訪大溪河濱公園，也別錯過這些</h3>
+            <ul class="mt-5 space-y-3">
+              {nearbyLandmarks.map((landmark) => (
+                <li class="flex gap-3 rounded-2xl border border-forest-800/[.10] bg-white p-4">
+                  <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-forest-800 text-white"><Icon name="pin" size={18} /></span>
+                  <div>
+                    <p class="text-base font-black text-forest-950">{landmark.name}</p>
+                    <p class="mt-1 text-sm leading-6 text-slate-600">{landmark.note}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 text-sm leading-7 text-slate-600">
+              When visiting <strong>{site.fullName}</strong>, visitors can easily explore surrounding historical landmarks and points of interest, including <strong>{nearbyLandmarks[0].name}</strong> and <strong>{nearbyLandmarks[1].name}</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -248,7 +377,7 @@ const notIdeal = [
   <section class="section-pad overflow-hidden">
     <div class="container-page grid gap-10 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
       <div class="reveal relative min-h-[520px] overflow-hidden rounded-[2.2rem]">
-        <img src="/images/love-daxi.webp" alt="大溪河濱公園 LOVE DAXI 實景" width="1280" height="960" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover" />
+        <img src="/images/love-daxi.webp" alt={`${site.fullName} LOVE DAXI 草地裝置實景（${site.city}）`} width="1280" height="960" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-t from-forest-950/[.85] via-transparent to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-9">
           <span class="rounded-full bg-white/[.14] px-3 py-1.5 text-xs font-black backdrop-blur">季節景觀</span>
@@ -280,12 +409,12 @@ const notIdeal = [
     </div>
   </section>
 
-  <section class="section-pad bg-moss-100/[.65]">
+  <section id="facilities" class="section-pad bg-moss-100/[.65]">
     <div class="container-page">
       <div class="reveal grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
         <div>
           <p class="eyebrow">園區設施</p>
-          <h2 class="section-title">有基本設施，但要把它當作戶外公園準備</h2>
+          <h2 class="section-title">園區設施：停車場、廁所、YouBike 站與遮陽休憩</h2>
         </div>
         <p class="section-lead lg:ml-auto">園內有停車、廁所、遮陽、YouBike 與體健設施；餐飲、補水與兒童備用品則建議在抵達前準備。</p>
       </div>
@@ -298,6 +427,11 @@ const notIdeal = [
             <p class="mt-2 text-sm leading-7 text-slate-600">{item.detail}</p>
           </article>
         ))}
+      </div>
+
+      <div class="reveal mt-8 flex flex-wrap items-center gap-4">
+        <a href="/facilities" class="btn-primary">看完整設施總覽 <Icon name="arrow" size={17} /></a>
+        <p class="max-w-xl text-sm leading-7 text-slate-600">含海盜船遊戲場細節、一般與無障礙廁所、遮陽亭棚、草地使用規範與園內沒有的設施。</p>
       </div>
     </div>
   </section>
@@ -313,7 +447,7 @@ const notIdeal = [
       <div class="mt-12 grid gap-6 lg:grid-cols-[1.08fr_.92fr]">
         <article class="reveal overflow-hidden rounded-[2rem] bg-forest-950 text-white">
           <div class="relative min-h-[300px]">
-            <img src="/images/parking-youbike.webp" alt="大溪河濱公園停車區與 YouBike 實景" width="1280" height="960" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover" />
+            <img src="/images/parking-youbike.webp" alt={`${site.fullName} 停車區與 YouBike 實景（${site.city}）`} width="1280" height="960" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/[.20] to-transparent"></div>
             <span class="absolute left-5 top-5 rounded-full bg-white/[.88] px-4 py-2 text-xs font-black text-forest-950">實景照片</span>
           </div>
@@ -337,9 +471,9 @@ const notIdeal = [
         <div class="grid gap-6">
           <article class="reveal soft-card rounded-[2rem] p-6 sm:p-8">
             <span class="grid size-11 place-items-center rounded-2xl bg-moss-100 text-forest-800"><Icon name="bike" size={22} /></span>
-            <h3 class="mt-5 text-2xl font-black text-forest-950">YouBike 與自行車</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600">園區設有 YouBike 站，也可銜接河岸自行車相關路線。公共自行車的車輛與空柱會即時變動，出發前請查官方 App。</p>
-            <a href="https://map.youbike.com.tw/search?location=大溪河濱公園" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-5">查詢 YouBike <Icon name="external" size={15} /></a>
+            <h3 class="mt-5 text-2xl font-black text-forest-950">自行車與 YouBike</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">園區設有 YouBike 站，也可銜接河岸自行車路線。租借方式、車型選擇與騎到大溪老街的時間，整理在下一段「單車租借與路線」。</p>
+            <a href="/bike" class="btn-secondary mt-5">看單車租借與路線 <Icon name="arrow" size={15} /></a>
           </article>
 
           <article class="reveal soft-card rounded-[2rem] p-6 sm:p-8">
@@ -351,6 +485,37 @@ const notIdeal = [
               <a href={site.tourismUrl} target="_blank" rel="noopener noreferrer" class="btn-ghost">官方交通資訊 <Icon name="external" size={15} /></a>
             </div>
           </article>
+        </div>
+      </div>
+
+      <div class="reveal mt-10">
+        <h3 class="text-2xl font-black tracking-tight text-forest-950 sm:text-3xl">大溪河濱公園停車場與入口資訊</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+          「大溪河濱公園停車場」是本站搜尋量最高的查詢，因此把費用、車位、入口位置、導航方式與替代停車方案集中在同一張表。
+        </p>
+      </div>
+
+      <div class="reveal mt-6 overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[720px] text-left">
+            <caption class="sr-only">大溪河濱公園停車場與入口資訊</caption>
+            <thead class="bg-moss-100 text-xs font-black tracking-wider text-forest-900">
+              <tr>
+                <th class="px-5 py-4">項目</th>
+                <th class="px-5 py-4">說明</th>
+                <th class="px-5 py-4">提醒</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-forest-800/[.08]">
+              {parkingGuide.map((row) => (
+                <tr class="text-sm">
+                  <th class="px-5 py-5 align-top font-black text-forest-950">{row.item}</th>
+                  <td class="px-5 py-5 align-top leading-7 text-slate-700">{row.value}</td>
+                  <td class="px-5 py-5 align-top text-xs leading-6 text-slate-500">{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -368,11 +533,48 @@ const notIdeal = [
         ></iframe>
       </div>
 
+      <div class="reveal mt-8 flex flex-wrap items-center gap-4">
+        <a href="/parking" class="btn-primary">看完整停車與交通指南 <Icon name="arrow" size={17} /></a>
+        <p class="max-w-xl text-sm leading-7 text-slate-600">含離峰時段建議、入口導航步驟、替代停車方案與大眾運輸方式。</p>
+      </div>
+
       <div class="reveal mt-6 rounded-[1.6rem] border border-cypress-500/[.18] bg-[#fff8f4] p-5 sm:flex sm:items-center sm:justify-between sm:gap-6">
         <div class="flex gap-3">
           <Icon name="info" size={22} class="mt-0.5 shrink-0 text-cypress-600" />
           <p class="text-sm leading-7 text-slate-600"><strong class="text-cypress-600">河濱安全提醒：</strong>豪雨、颱風、河川水位異常或主管機關封閉時不要進入；24 小時開放不等於所有時段、所有天候都適合遊玩。</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bike" class="section-pad bg-lake-100">
+    <div class="container-page">
+      <div class="reveal grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-end">
+        <div>
+          <p class="eyebrow">單車與租借</p>
+          <h2 class="section-title">單車租借與路線：YouBike 站、兒童單車場與大鶯綠野自行車道</h2>
+        </div>
+        <p class="section-lead lg:ml-auto">{bikeGuide.summary}</p>
+      </div>
+
+      <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {bikeGuide.options.map((option) => (
+          <article class="reveal soft-card flex flex-col rounded-[1.6rem] p-6">
+            <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name={option.icon} size={23} /></span>
+            <h3 class="mt-5 text-lg font-black text-forest-950">{option.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{option.detail}</p>
+            {option.url && (
+              <a href={option.url} target="_blank" rel="noopener noreferrer" class="btn-secondary mt-5 self-start">
+                {option.linkLabel} <Icon name="external" size={15} />
+              </a>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <div class="reveal mt-8 flex flex-wrap items-center gap-4">
+        <a href="/bike" class="btn-primary">看完整路線、車型與費用比較 <Icon name="arrow" size={17} /></a>
+        <p class="max-w-xl text-sm leading-7 text-slate-600">含五條騎乘路線的時間參考、YouBike 與老街租車店的車型比較、兒童自行車訓練場使用方式與安全裝備清單。</p>
       </div>
     </div>
   </section>
@@ -421,6 +623,83 @@ const notIdeal = [
     </div>
   </section>
 
+  <section id="sources" class="section-pad bg-sand-100">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">資料來源</p>
+        <h2 class="section-title">本站評分、圖片與資料的引用來源</h2>
+        <p class="section-lead">
+          為避免 Google 評論政策風險與維持資料透明，本頁所有評分、評論、圖片與事實資訊皆於下方逐項註明出處與最新同步時間，方便你交叉查核。
+        </p>
+      </div>
+
+      <div class="reveal mt-12 grid gap-5 md:grid-cols-2">
+        {sources.map((src) => (
+          <article class="soft-card rounded-[1.6rem] p-6">
+            <div class="flex items-start gap-4">
+              <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-moss-100 text-forest-800"><Icon name="info" size={20} /></span>
+              <div class="min-w-0">
+                <h3 class="text-lg font-black tracking-tight text-forest-950">{src.label}</h3>
+                <p class="mt-2 text-sm leading-7 text-slate-600">{src.detail}</p>
+                <a href={src.url} target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm font-black text-forest-800 underline-offset-4 hover:underline">
+                  {src.linkLabel} <Icon name="external" size={14} />
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="reveal mt-10 grid gap-4 lg:grid-cols-2">
+        <div class="rounded-[1.4rem] border border-cypress-500/[.20] bg-[#fff8f4] p-5 sm:p-6">
+          <p class="flex items-center gap-2 text-sm font-black text-cypress-600"><Icon name="camera" size={18} /> 圖片版權</p>
+          <p class="mt-3 text-sm leading-7 text-slate-700">
+            {site.imageCopyright}
+          </p>
+          <p class="mt-3 text-xs leading-6 text-slate-500">
+            圖片來源：桃園市政府工務局「樂桃園 P@rk Go」公園頁面（<a class="underline-offset-2 hover:underline" href={site.officialUrl} target="_blank" rel="noopener noreferrer">taoyuan-parkgo.tw/parks/44</a>），依「桃園市政府暨所屬機關網站政府網站資料開放宣告」使用；本站僅做尺寸壓縮與版面裁切。
+          </p>
+        </div>
+
+        <div class="rounded-[1.4rem] border border-forest-800/[.12] bg-white p-5 sm:p-6">
+          <p class="flex items-center gap-2 text-sm font-black text-forest-800"><Icon name="info" size={18} /> 評價來源</p>
+          <p class="mt-3 text-sm leading-7 text-slate-700">
+            評分與評論數同步自谷歌地圖（Google Maps）使用者評論 · {site.ratingSyncedAt}。
+          </p>
+          <p class="mt-3 text-xs leading-6 text-slate-500">
+            {site.ratingSourceNote}
+          </p>
+          <a href={googleRating.reviewsUrl} target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm font-black text-forest-800 underline-offset-4 hover:underline">
+            在 Google 地圖查看全部評論 <Icon name="external" size={14} />
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal mt-10 overflow-hidden rounded-[1.6rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.138408483746!2d121.28106307537193!3d24.89326007790791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34681817b55e18cd%3A0x337e23894ae95017!2z5aSn5rqq5rKz5ruo5YWs5Zut!5e0!3m2!1szh-CN!2stw!4v1785298572973!5m2!1szh-CN!2stw"
+          width="600"
+          height="450"
+          style="border:0;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          title="大溪河濱公園 Google 地圖"
+          class="block h-[320px] w-full sm:h-[420px]"
+        ></iframe>
+      </div>
+
+      <div class="reveal mt-6 text-center">
+        <p class="text-sm leading-7 text-slate-600">
+          For official updates and regional tourism information, visit
+          <a class="font-black text-forest-800 underline-offset-4 hover:underline" href={site.tourismUrl} target="_blank" rel="noopener noreferrer">
+            {site.country} / {site.state} 官方觀光導覽網
+          </a>。
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section id="faq" class="section-pad bg-forest-950 text-white">
     <div class="container-page grid gap-12 lg:grid-cols-[.68fr_1.32fr]">
       <div class="reveal lg:sticky lg:top-28 lg:self-start">
@@ -429,17 +708,7 @@ const notIdeal = [
         <p class="section-lead text-white/[.58]!">答案以官方資料和安全原則整理。涉及當日天候、施工、活動與臨時管制時，仍以現場公告為準。</p>
       </div>
 
-      <div class="reveal divide-y divide-white/[.10] rounded-[2rem] border border-white/[.10] bg-white/[.05] px-5 sm:px-7">
-        {faqs.map((faq, index) => (
-          <details class="group py-2" open={index === 0}>
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-5 py-5 font-black text-white marker:hidden">
-              <span>{faq.question}</span>
-              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/[.08] text-white/[.60] transition group-open:rotate-180"><Icon name="chevron" size={17} /></span>
-            </summary>
-            <p class="max-w-2xl pb-6 pr-8 text-sm leading-8 text-white/[.58]">{faq.answer}</p>
-          </details>
-        ))}
-      </div>
+      <div class="reveal"><FaqList items={faqs} /></div>
     </div>
   </section>
 

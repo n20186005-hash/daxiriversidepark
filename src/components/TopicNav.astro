@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import { topicPages } from '../data/site';
+
+interface Props {
+  /** 目前所在的主題專區 id，會從清單中排除。 */
+  current?: string;
+  /** 是否一併列出「總覽首頁」卡片；首頁本身不需要。 */
+  includeHome?: boolean;
+  title?: string;
+  lead?: string;
+}
+
+const { current, includeHome = true, title, lead } = Astro.props;
+const items = [
+  ...(includeHome
+    ? [
+        {
+          key: 'home',
+          path: '/',
+          icon: 'map',
+          heading: '大溪河濱公園總覽',
+          summary: '園區地圖、親子玩法、落羽松季節與順遊行程',
+        },
+      ]
+    : []),
+  ...topicPages.map((page) => ({
+    key: page.id,
+    path: page.path,
+    icon: page.icon,
+    heading: page.heading,
+    summary: page.summary,
+  })),
+].filter((item) => item.key !== current);
+---
+{title && (
+  <div class="max-w-3xl">
+    <p class="eyebrow">相關專區</p>
+    <h2 class="section-title">{title}</h2>
+    {lead && <p class="section-lead">{lead}</p>}
+  </div>
+)}
+<div class:list={['grid gap-4 sm:grid-cols-2 lg:grid-cols-3', title && 'mt-10']}>
+  {items.map((item) => (
+    <a
+      href={item.path}
+      class="reveal soft-card group flex flex-col rounded-[1.6rem] p-6 transition hover:-translate-y-1"
+    >
+      <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white">
+        <Icon name={item.icon} size={23} />
+      </span>
+      <h3 class="mt-5 text-lg font-black text-forest-950">{item.heading}</h3>
+      <p class="mt-2 text-sm leading-7 text-slate-600">{item.summary}</p>
+      <span class="mt-5 inline-flex items-center gap-2 text-sm font-black text-forest-800">
+        前往閱讀 <Icon name="arrow" size={16} class="transition group-hover:translate-x-1" />
+      </span>
+    </a>
+  ))}
+</div>

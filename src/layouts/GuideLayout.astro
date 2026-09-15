@@ -1,0 +1,131 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FaqList from '../components/FaqList.astro';
+import TopicNav from '../components/TopicNav.astro';
+import { site, topicPages } from '../data/site';
+
+interface Props {
+  /** 對應 site.ts 的 topicPages id。 */
+  topicId: 'parking' | 'bike' | 'facilities';
+  /** 本頁專屬 FAQ，會同時輸出到頁面與 FAQPage 結構化資料。 */
+  faqs: readonly { question: string; answer: string }[];
+  /** 頁內目錄，對應各段落標題的 id。 */
+  toc: readonly { id: string; label: string }[];
+}
+
+const { topicId, faqs, toc } = Astro.props;
+const topic = topicPages.find((page) => page.id === topicId);
+
+if (!topic) {
+  throw new Error(`GuideLayout 收到未定義的主題專區 id：${topicId}`);
+}
+
+const breadcrumbs = [
+  { name: site.fullName, path: '/' },
+  { name: topic.breadcrumb, path: topic.path },
+];
+---
+<BaseLayout
+  title={topic.title}
+  description={topic.description}
+  breadcrumbs={breadcrumbs}
+  faqs={faqs}
+  preloadImage={topic.image}
+>
+  <section class="relative overflow-hidden bg-forest-950 pt-24 text-white md:pt-32">
+    <div class="absolute inset-0">
+      <img
+        src={topic.image}
+        alt={`${site.fullName} ${topic.breadcrumb}實景（${site.city}）`}
+        width="1280"
+        height="960"
+        fetchpriority="high"
+        class="size-full object-cover object-center"
+      />
+      <div class="absolute inset-0 bg-[linear-gradient(105deg,rgba(18,39,31,.96)_0%,rgba(24,49,40,.88)_44%,rgba(24,49,40,.42)_100%)]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(0deg,rgba(24,49,40,.96)_0%,transparent_55%)]"></div>
+    </div>
+
+    <div class="container-page relative z-10 pb-12 md:pb-16">
+      <Breadcrumbs items={breadcrumbs} tone="dark" />
+      <p class="mt-8 text-xs font-black tracking-[.2em] text-[#e9b29d]">{topic.eyebrow}</p>
+      <h1 class="mt-4 max-w-4xl text-[clamp(2rem,5.2vw,3.5rem)] font-black leading-[1.1] tracking-[-.04em] text-white">
+        {topic.heading}
+      </h1>
+      <p class="mt-6 max-w-3xl text-base leading-8 text-white/[.74]">{topic.lead}</p>
+      <p class="mt-5 flex items-start gap-2 text-sm leading-6 text-white/[.52]">
+        <Icon name="pin" size={16} class="mt-1 shrink-0" />
+        <span>{site.address}・入口位於巷道內，建議直接使用座標導航。</span>
+      </p>
+
+      <nav class="mt-9 flex flex-wrap gap-2" aria-label="本頁目錄">
+        {toc.map((item) => (
+          <a
+            href={`#${item.id}`}
+            class="rounded-full border border-white/[.20] bg-white/[.08] px-4 py-2 text-xs font-black text-white/[.80] backdrop-blur transition hover:bg-white/[.16] hover:text-white"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <slot />
+
+  <section class="section-pad bg-sand-100">
+    <div class="container-page">
+      <div class="reveal">
+        <TopicNav
+          current={topic.id}
+          title="接著看其他主題"
+          lead="三個專頁分別對應停車、單車與設施需求；總覽首頁另有園區地圖、親子玩法與順遊行程。"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-forest-950 text-white">
+    <div class="container-page grid gap-12 lg:grid-cols-[.68fr_1.32fr]">
+      <div class="reveal lg:sticky lg:top-28 lg:self-start">
+        <p class="eyebrow text-[#e9b29d]!">常見問題</p>
+        <h2 class="section-title text-white!">{topic.breadcrumb}常見問題</h2>
+        <p class="section-lead text-white/[.58]!">
+          答案依官方資料與安全原則整理。涉及當日天候、施工、活動與臨時管制時，仍以現場公告為準。
+        </p>
+      </div>
+
+      <div class="reveal"><FaqList items={faqs} /></div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-[#e8b8a5]">
+    <div class="container-page">
+      <div class="reveal relative overflow-hidden rounded-[2.2rem] bg-forest-950 px-6 py-12 text-white shadow-2xl sm:px-10 md:py-16 lg:px-16">
+        <div class="absolute -right-12 -top-24 size-72 rounded-full border-[48px] border-white/[.05]"></div>
+        <div class="absolute -bottom-32 right-44 size-64 rounded-full bg-cypress-500/[.20] blur-3xl"></div>
+        <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p class="text-xs font-black tracking-[.2em] text-[#e9b29d]">下一步</p>
+            <h2 class="mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">
+              看完了{topic.breadcrumb}，接著規劃整體行程
+            </h2>
+            <p class="mt-5 max-w-2xl text-sm leading-7 text-white/[.60]">
+              回到總覽首頁，可以接著看園區示意圖、依停留時間的三條路線，以及大溪老街順遊安排。
+            </p>
+          </div>
+          <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+            <a href="/" class="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-white/[.25] bg-white/[.10] px-6 text-base font-black text-white backdrop-blur transition hover:bg-white/[.18]">
+              回到總覽首頁 <Icon name="arrow" size={19} />
+            </a>
+            <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-white px-6 text-base font-black text-forest-950 transition hover:-translate-y-1">
+              <Icon name="pin" size={20} /> 立即導航
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

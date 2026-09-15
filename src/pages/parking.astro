@@ -1,0 +1,293 @@
+---
+import GuideLayout from '../layouts/GuideLayout.astro';
+import Icon from '../components/Icon.astro';
+import {
+  parkingGuideFull,
+  parkingTiming,
+  parkingAlternatives,
+  parkingSteps,
+  parkingFaqs,
+  site,
+} from '../data/site';
+
+export const prerender = true;
+
+const toc = [
+  { id: 'parking-basics', label: '停車場快速解答' },
+  { id: 'parking-timing', label: '車位與離峰時段' },
+  { id: 'parking-entrance', label: '入口與導航' },
+  { id: 'parking-alternatives', label: '替代停車方案' },
+  { id: 'parking-transit', label: '大眾運輸' },
+  { id: 'parking-notes', label: '停車注意事項' },
+];
+
+const transitOptions = [
+  {
+    icon: 'route',
+    title: '桃園市公車',
+    detail: '查詢往大溪方向的公車路線與鄰近站牌，下車後步行進入園區。班次與站點會調整，本站不硬編固定時刻。',
+    url: 'https://ebus.tycg.gov.tw/ebus/',
+    linkLabel: '桃園公車動態',
+    external: true,
+  },
+  {
+    icon: 'pin',
+    title: '計程車與叫車',
+    detail: '從大溪老街或大溪橋一帶叫車前往距離不遠。回程建議先叫車，避免在巷道內久候。',
+    url: site.mapsUrl,
+    linkLabel: '開啟地圖',
+    external: true,
+  },
+  {
+    icon: 'bike',
+    title: 'YouBike 與單車',
+    detail: '園區設有 YouBike 站，適合從大溪老街或大溪橋周邊騎乘前往，不必煩惱停車。',
+    url: '/bike',
+    linkLabel: '看租腳踏車與路線',
+    external: false,
+  },
+] as const;
+---
+
+<GuideLayout topicId="parking" faqs={parkingFaqs} toc={toc}>
+  <section id="parking-basics" class="section-pad bg-sand-50">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">停車場快速解答</p>
+        <h2 class="section-title">大溪河濱公園停車場一次看懂</h2>
+        <p class="section-lead">
+          下表是開車族最常問的十件事。官方沒有公告車位數與固定費率，因此涉及當日管制、收費與接駁的部分，一律以現場告示與主管機關公告為準。
+        </p>
+      </div>
+
+      <div class="reveal mt-10 overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[720px] text-left">
+            <caption class="sr-only">大溪河濱公園停車場完整資訊</caption>
+            <thead class="bg-moss-100 text-xs font-black tracking-wider text-forest-900">
+              <tr>
+                <th class="px-5 py-4">項目</th>
+                <th class="px-5 py-4">說明</th>
+                <th class="px-5 py-4">提醒</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-forest-800/[.08]">
+              {parkingGuideFull.map((row) => (
+                <tr class="text-sm">
+                  <th class="px-5 py-5 align-top font-black text-forest-950">{row.item}</th>
+                  <td class="px-5 py-5 align-top leading-7 text-slate-700">{row.value}</td>
+                  <td class="px-5 py-5 align-top text-xs leading-6 text-slate-500">{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-timing" class="section-pad bg-white">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">車位與時段</p>
+        <h2 class="section-title">什麼時候最好停？停車時段建議</h2>
+        <p class="section-lead">
+          「假日停得到嗎」是僅次於費用最常見的疑問。以下是一般週末與假日的經驗值，遇到連假、大型活動或落羽松轉色期會再更壅塞。
+        </p>
+      </div>
+
+      <div class="reveal mt-10 overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[640px] text-left">
+            <caption class="sr-only">大溪河濱公園停車時段建議</caption>
+            <thead class="bg-moss-100 text-xs font-black tracking-wider text-forest-900">
+              <tr>
+                <th class="px-5 py-4">時段</th>
+                <th class="px-5 py-4">車位好找程度</th>
+                <th class="px-5 py-4">說明</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-forest-800/[.08]">
+              {parkingTiming.map((row) => (
+                <tr class="text-sm">
+                  <th class="px-5 py-5 align-top font-black text-forest-950">{row.slot}</th>
+                  <td class="px-5 py-5 align-top">
+                    <span class:list={[
+                      'inline-flex rounded-full px-3 py-1 text-xs font-black',
+                      row.level === '容易' || row.level === '較容易'
+                        ? 'bg-moss-200 text-forest-900'
+                        : row.level === '普通'
+                          ? 'bg-sand-100 text-slate-700'
+                          : 'bg-[#fbe3da] text-cypress-600',
+                    ]}>
+                      {row.level}
+                    </span>
+                  </td>
+                  <td class="px-5 py-5 align-top text-xs leading-6 text-slate-500">{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <ul class="reveal mt-6 grid gap-3 sm:grid-cols-3">
+        <li class="rounded-2xl border border-forest-800/[.10] bg-moss-100/[.60] px-5 py-4 text-sm leading-7 text-slate-700">
+          <strong class="block text-forest-950">假日最佳解</strong>上午 9:30 前抵達，通常能在園區內找到車位。
+        </li>
+        <li class="rounded-2xl border border-forest-800/[.10] bg-moss-100/[.60] px-5 py-4 text-sm leading-7 text-slate-700">
+          <strong class="block text-forest-950">最塞時段</strong>假日 12:00–17:00 與老街人潮重疊，建議改停老街周邊。
+        </li>
+        <li class="rounded-2xl border border-forest-800/[.10] bg-moss-100/[.60] px-5 py-4 text-sm leading-7 text-slate-700">
+          <strong class="block text-forest-950">季節提醒</strong>約 12 月至翌年 1 月落羽松轉色期，整天都會偏滿。
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="parking-entrance" class="section-pad bg-sand-100">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">入口與導航</p>
+        <h2 class="section-title">入口在大鶯路巷道內，導航請直接設座標</h2>
+        <p class="section-lead">
+          官方地址為{site.address}。最後一段是巷道，不像大型景區那種明顯入口，這是第一次造訪最常卡住的地方。
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:items-start">
+        <ol class="reveal space-y-4">
+          {parkingSteps.map((item, index) => (
+            <li class="flex gap-4 rounded-2xl border border-forest-800/[.10] bg-white px-5 py-4">
+              <span class="grid size-9 shrink-0 place-items-center rounded-full bg-forest-800 text-sm font-black text-white">{index + 1}</span>
+              <div>
+                <strong class="block text-base font-black text-forest-950">{item.step}</strong>
+                <p class="mt-1 text-sm leading-7 text-slate-600">{item.text}</p>
+              </div>
+            </li>
+          ))}
+          <li class="flex flex-wrap gap-3 pt-1">
+            <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+              <Icon name="pin" size={18} /> 用 Google 地圖導航
+            </a>
+          </li>
+        </ol>
+
+        <div class="reveal overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.138408483746!2d121.28106307537193!3d24.89326007790791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34681817b55e18cd%3A0x337e23894ae95017!2z5aSn5rqq5rKz5ruo5YWs5Zut!5e0!3m2!1szh-CN!2stw!4v1785298572973!5m2!1szh-CN!2stw"
+            width="600"
+            height="450"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            title="大溪河濱公園入口與停車位置 Google 地圖"
+            class="block h-[360px] w-full sm:h-[430px]"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-alternatives" class="section-pad bg-white">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">替代停車</p>
+        <h2 class="section-title">園區停車場滿了，可以停哪裡？</h2>
+        <p class="section-lead">四個常見備案，依你的行程重心選擇；連假與活動日請以現場指揮與合法格位為優先。</p>
+      </div>
+
+      <div class="reveal mt-10 overflow-hidden rounded-[2rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[680px] text-left">
+            <caption class="sr-only">大溪河濱公園替代停車方案</caption>
+            <thead class="bg-moss-100 text-xs font-black tracking-wider text-forest-900">
+              <tr>
+                <th class="px-5 py-4">停車位置</th>
+                <th class="px-5 py-4">步行距離</th>
+                <th class="px-5 py-4">適合情況</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-forest-800/[.08]">
+              {parkingAlternatives.map((row) => (
+                <tr class="text-sm">
+                  <th class="px-5 py-5 align-top font-black text-forest-950">{row.place}</th>
+                  <td class="px-5 py-5 align-top font-black text-forest-800">{row.distance}</td>
+                  <td class="px-5 py-5 align-top text-xs leading-6 text-slate-500">{row.best}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="reveal mt-6 rounded-[1.6rem] border border-cypress-500/[.18] bg-[#fff8f4] p-5 sm:flex sm:items-start sm:gap-4">
+        <Icon name="info" size={22} class="mt-0.5 shrink-0 text-cypress-600" />
+        <p class="mt-2 text-sm leading-7 text-slate-600 sm:mt-0">
+          <strong class="text-cypress-600">請勿違規停車：</strong>巷道與農路是當地居民日常動線，佔用可能影響消防與救護通行。遇管制時請依現場指揮改停替代車位，或改搭大眾運輸。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-transit" class="section-pad bg-sand-50">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">大眾運輸</p>
+        <h2 class="section-title">不開車也能到：公車、叫車與單車</h2>
+        <p class="section-lead">不想找車位的話，大眾運輸與單車是更輕鬆的選擇，也能順路串連大溪老街。</p>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {transitOptions.map((option) => (
+          <article class="reveal soft-card flex flex-col rounded-[1.6rem] p-6">
+            <span class="grid size-12 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name={option.icon} size={23} /></span>
+            <h3 class="mt-5 text-lg font-black text-forest-950">{option.title}</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-600">{option.detail}</p>
+            <a
+              href={option.url}
+              target={option.external ? '_blank' : undefined}
+              rel={option.external ? 'noopener noreferrer' : undefined}
+              class="btn-secondary mt-5 self-start"
+            >
+              {option.linkLabel} <Icon name={option.external ? 'external' : 'arrow'} size={15} />
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-notes" class="section-pad bg-white">
+    <div class="container-page">
+      <div class="reveal max-w-3xl">
+        <p class="eyebrow">現場提醒</p>
+        <h2 class="section-title">停車與行車注意事項</h2>
+        <p class="section-lead">河濱公園是開放式戶外空間，車輛動線與一般景區停車場不同，出發前先看這幾點。</p>
+      </div>
+
+      <ul class="reveal mt-10 grid gap-3 sm:grid-cols-2">
+        {[
+          '巷道較窄且部分路段無法會車，放慢車速並留意自行車與行人。',
+          '豪雨、颱風、河川水位異常或主管機關封閉時，請勿進入園區。',
+          '車內不要放置貴重物品，貴重物隨身攜帶。',
+          '夜間照明與維護狀況以現場為準，親子活動建議安排在日間。',
+          '園區禁止生火、烤肉與營釘等破壞草皮的活動，實際規範依現場告示。',
+          '離開前先確認孩子、寵物與垃圾都已上車，並帶走自己的垃圾。',
+        ].map((tip) => (
+          <li class="flex items-start gap-3 rounded-2xl border border-forest-800/[.10] bg-sand-50 px-5 py-4 text-sm leading-7 text-slate-600">
+            <Icon name="check" size={17} class="mt-1.5 shrink-0 text-forest-700" /> {tip}
+          </li>
+        ))}
+      </ul>
+
+      <p class="reveal mt-8 text-sm leading-7 text-slate-600">
+        想騎車進園區、或需要兒童車與親子車，請見
+        <a href="/bike" class="font-black text-forest-800 underline underline-offset-4">大溪河濱公園租腳踏車與路線</a>；
+        想先確認遊戲場、廁所與遮陽設施，請見
+        <a href="/facilities" class="font-black text-forest-800 underline underline-offset-4">園區設施總覽</a>。
+      </p>
+    </div>
+  </section>
+</GuideLayout>
