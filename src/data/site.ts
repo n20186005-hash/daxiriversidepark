@@ -5,10 +5,10 @@ export const site = {
   domain: 'DaxiRiversidePark.com',
   domainName: 'daxiriversidepark.com',
   canonical: 'https://daxiriversidepark.com/',
-  // 標題以品牌主關鍵字開頭，並帶入搜尋需求最高的「免費停車場」「YouBike 與腳踏車租借」「海盜船遊具」。
-  title: '大溪河濱公園｜免費停車場、YouBike 與腳踏車租借、海盜船遊具指南',
+  // 標題以品牌主關鍵字開頭，並依照 2026-10 SEO 報告把搜尋意圖最高的「停車場位置」「YouBike 租車」放在前半部。
+  title: '大溪河濱公園｜停車場位置、YouBike租車、親子遊具與交通攻略',
   description:
-    '大溪河濱公園（Daxi Riverside Park）行前指南：免費停車場入口與離峰時段、YouBike 與腳踏車租借、海盜船兒童遊樂場、大草皮野餐與落羽松，含大溪老街交通與順遊建議。',
+    '大溪河濱公園怎麼去？整理桃園大溪河濱公園停車場位置、免費停車資訊、YouBike租借、海盜船遊具、落羽松季節及大溪老街順遊建議，出發前先看交通與設施攻略。',
   shortDescription:
     '大溪河濱公園完整行前指南：免費停車、海盜船遊具、兒童單車訓練場、落羽松、野餐草地、廁所、交通與大溪老街順遊。',
   fullAddress: '335台灣桃園市大溪區瑞興里大鶯路60巷89弄75號',
@@ -28,17 +28,17 @@ export const site = {
   reviewsUrl: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
   officialUrl: 'https://www.taoyuan-parkgo.tw/parks/44',
   tourismUrl: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/598',
-  updatedAt: '2026-09-15',
-  ratingSyncedAt: '2026 年 9 月',
+  updatedAt: '2026-10-12',
+  ratingSyncedAt: '2026 年 10 月',
   imageCopyright: '本網站所展示的所有圖片產權及版權均歸原攝影者所有。',
-  ratingSourceNote: '同步自 Google 地圖使用者評論，同步時間 2026 年 9 月；著作權歸原作者與 Google 地圖所有。',
+  ratingSourceNote: '同步自 Google 地圖使用者評論，同步時間 2026 年 10 月；著作權歸原作者與 Google 地圖所有。',
 } as const;
 
 export const googleRating = {
   score: 4.4,
-  count: 5379,
+  count: 5392,
   source: 'Google 地圖使用者評論',
-  syncedAt: '2026 年 9 月',
+  syncedAt: '2026 年 10 月',
   reviewsUrl: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
   placeUrl:
     'https://www.google.com/maps/place/%E5%A4%A7%E6%BA%AA%E6%B2%B3%E6%BB%A8%E5%85%AC%E5%9B%AD/@24.8932601,121.2810631,17z/data=!3m1!4b1!4m6!3m5!1s0x34681817b55e18cd:0x337e23894ae95017!8m2!3d24.8932601!4d121.283638!16s%2Fg%2F11gz9mcb1?entry=ttu&g_ep=EgoyMDI2MDcyNi4wIKXMDSoASAFQAw%3D%3D',
@@ -52,7 +52,7 @@ export const nearbyLandmarks = [
 export const sources = [
   {
     label: '評分與評論',
-    detail: '同步自 Google 地圖使用者評論，同步時間 2026 年 9 月；著作權歸原作者與 Google 地圖所有。',
+    detail: '同步自 Google 地圖使用者評論，同步時間 2026 年 10 月；著作權歸原作者與 Google 地圖所有。',
     url: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
     linkLabel: '在 Google 地圖查看全部評論',
   },
@@ -315,7 +315,7 @@ export const faqs = [
   },
   {
     question: 'Google 地圖上的評分與評論數是最新資料嗎？',
-    answer: '本站同步自 Google 地圖使用者評論（2026 年 9 月），資料按月對照 Google 地圖商家頁。評論內容僅作來源說明，不嵌入搜尋引擎結構化資料，避免版本不一致問題。',
+    answer: '本站同步自 Google 地圖使用者評論（2026 年 10 月），資料按月對照 Google 地圖商家頁。評論內容僅作來源說明，不嵌入搜尋引擎結構化資料，避免版本不一致問題。',
   },
   {
     question: '停車場收費嗎？入口好找嗎？',

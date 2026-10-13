@@ -176,6 +176,34 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
     </div>
   </section>
 
+  <section id="quick-nav" class="section-pad pt-0">
+    <div class="container-page">
+      <div class="reveal grid gap-4 sm:grid-cols-3">
+        <a href="#parking-quick" class="group flex items-center gap-4 rounded-[1.6rem] bg-forest-800 p-5 text-white shadow-[0_20px_48px_rgba(49,92,76,.18)] transition hover:-translate-y-1">
+          <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/[.12]"><Icon name="parking" size={24} /></span>
+          <span>
+            <span class="block text-base font-black">停車場與入口</span>
+            <span class="block text-xs font-bold text-white/[.65]">免費停車・巷道導航</span>
+          </span>
+        </a>
+        <a href="#bike" class="group flex items-center gap-4 rounded-[1.6rem] bg-moss-100 p-5 text-forest-950 shadow-sm transition hover:-translate-y-1">
+          <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name="bike" size={24} /></span>
+          <span>
+            <span class="block text-base font-black">租腳踏車與路線</span>
+            <span class="block text-xs font-bold text-slate-500">YouBike・兒童單車</span>
+          </span>
+        </a>
+        <a href="#highlights" class="group flex items-center gap-4 rounded-[1.6rem] bg-sand-100 p-5 text-forest-950 shadow-sm transition hover:-translate-y-1">
+          <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-forest-800 text-white"><Icon name="inclusive" size={24} /></span>
+          <span>
+            <span class="block text-base font-black">遊具與景點</span>
+            <span class="block text-xs font-bold text-slate-500">海盜船・草地・落羽松</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section id="about" class="section-pad pt-0">
     <div class="container-page">
       <div class="reveal soft-card overflow-hidden rounded-[2rem] p-6 sm:p-10">
@@ -262,6 +290,58 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
             <strong class="text-cypress-600">最佳時段：</strong>夏季上午 8–11 點或下午 4 點後；秋冬可安排下午散步與拍照。
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="parking-quick" class="section-pad">
+    <div class="container-page">
+      <div class="reveal grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+        <div class="relative min-h-[380px] overflow-hidden rounded-[2.2rem] sm:min-h-[440px]">
+          <img src="/images/parking-youbike.webp" alt={`${site.fullName} 停車區與入口實景（${site.city}）`} width="1280" height="960" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-950/[.82] via-forest-950/[.20] to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+            <span class="rounded-full bg-white/[.14] px-3 py-1.5 text-xs font-black backdrop-blur">實際停車與入口區域</span>
+            <h3 class="mt-4 text-2xl font-black sm:text-3xl">入口藏在巷道內，設座標導航最穩</h3>
+            <p class="mt-2 max-w-md text-sm leading-7 text-white/[.72]">最後一段不像大型景區入口，放慢車速並留意現場標線，就能找到入口附近的停車空間。</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow">停車場位置與入口</p>
+          <h2 class="section-title">開車前先看完這張停車速覽</h2>
+          <p class="section-lead">
+            「大溪河濱公園停車場」是本站搜尋量最高的查詢。下方整理最常被問的幾點，完整十項與離峰時段請見專頁。
+          </p>
+
+          <ul class="mt-7 space-y-3">
+            {[
+              ['parking', '免費停車', '官方設施資料列有停車場，現有資訊多以免費停車場描述；是否收費與當日管制以現場告示為準。'],
+              ['pin', '入口位置', `${site.address}，入口位於大鶯路巷道內，請直接使用座標導航。`],
+              ['clock', '假日建議', '09:30 前抵達最容易停；12:00–17:00 與落羽松季最難停，建議改停老街周邊。'],
+              ['route', '替代停車', '園區滿位時可停大溪橋周邊（步行約 8–12 分）或大溪老街收費停車場。'],
+            ].map(([icon, title, text]) => (
+              <li class="flex gap-3 rounded-2xl border border-forest-800/[.10] bg-white px-5 py-4">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-moss-100 text-forest-800"><Icon name={icon} size={20} /></span>
+                <div>
+                  <p class="text-sm font-black text-forest-950">{title}</p>
+                  <p class="mt-1 text-sm leading-7 text-slate-600">{text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-6 flex flex-wrap items-center gap-4">
+            <a href="/parking" class="btn-primary">看完整停車與交通指南 <Icon name="arrow" size={17} /></a>
+            <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              <Icon name="pin" size={16} /> 開始導航
+            </a>
+          </div>
+
+          <p class="mt-5 inline-flex items-center gap-2 rounded-full bg-sand-100 px-4 py-2 text-xs font-black text-slate-500">
+            <Icon name="info" size={14} class="text-cypress-600" /> 收費與車位資訊核實日期：{site.ratingSyncedAt}
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -382,7 +462,7 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
         <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-9">
           <span class="rounded-full bg-white/[.14] px-3 py-1.5 text-xs font-black backdrop-blur">季節景觀</span>
           <h2 class="mt-4 text-3xl font-black sm:text-4xl">落羽松不是每天都紅</h2>
-          <p class="mt-3 max-w-xl text-sm leading-7 text-white/[.72]">固定月份只能當作參考。到訪前查看最近一至兩週的實景照片，比追逐網路上的舊日期更可靠。</p>
+          <p class="mt-3 max-w-xl text-sm leading-7 text-white/[.72]">落羽松轉色每年不同。出發前請以「拍攝日期在一至兩週內」的實景照片判斷，不要只依固定月份或往年照片；本站季節照片也會標註拍攝月份，請以最新一張為準。</p>
         </div>
       </div>
 
@@ -555,6 +635,13 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
           <h2 class="section-title">單車租借與路線：YouBike 站、兒童單車場與大鶯綠野自行車道</h2>
         </div>
         <p class="section-lead lg:ml-auto">{bikeGuide.summary}</p>
+      </div>
+
+      <div class="reveal mt-8 rounded-[1.6rem] border border-forest-800/[.14] bg-white p-5 sm:flex sm:items-start sm:gap-4">
+        <Icon name="info" size={22} class="mt-0.5 shrink-0 text-cypress-600" />
+        <p class="mt-2 text-sm leading-7 text-slate-600 sm:mt-0">
+          <strong class="text-cypress-600">先釐清：園區內只有 YouBike 公共自行車站，沒有現場民營租車櫃檯。</strong>YouBike 是公共自行車，車型與數量依官方配置，無法保證現場有兒童尺寸；若要兒童車、親子車或想租一整天，請到大溪老街、大溪橋周邊的自行車店。兒童自行車訓練場則需自備車輛與護具，不是租車點。
+        </p>
       </div>
 
       <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -4,7 +4,7 @@
 // - pre-cache: static assets for offline first paint
 // - stale-while-revalidate: same-origin GET requests for fast navigation
 // - network-first: navigations so updates deploy quickly
-const VERSION = 'daxir-riverside-v2026-09-15-2';
+const VERSION = 'daxir-riverside-v2026-10-12-1';
 const PRECACHE = `${VERSION}-precache`;
 const RUNTIME = `${VERSION}-runtime`;
 
