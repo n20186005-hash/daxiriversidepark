@@ -106,7 +106,7 @@ export const nearbyAttractions = [
     caution: '全線可能涉及道路交會與部分坡度，不能保證兒童或初學者都適合騎完全程。',
   },
   {
-    slug: 'wude-hall', name: '大溪武德殿', english: 'Daxi Wude Hall', type: '日治時期歷史建築', district: '桃園市大溪區普濟路', stay: '建議 30–50 分鐘', image: 'https://ws.tycg.gov.tw/001/Upload/86/RelPic/17238/1157539/29.jpg',
+    slug: 'wude-hall', name: '大溪武德殿', english: 'Daxi Wude Hall', type: '日治時期歷史建築', district: '桃園市大溪區普濟路', stay: '建議 30–50 分鐘', image: '/images/nearby/wude-hall.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/392', mapQuery: '大溪木藝生態博物館 武德殿 桃園市大溪區普濟路33-3號',
     address: '335 桃園市大溪區普濟路33-3號', hours: '週二至週日 09:30–17:00，週一休館；特殊節日依館方公告', admission: '免費參觀', contact: '大溪木藝生態博物館 03-3888600',
     parking: '老城區停車位有限；可先查橋頭、月眉或公所前停車場，依步行動線前往普濟路。',
@@ -127,7 +127,7 @@ export const nearbyAttractions = [
     faqFocus: { question: '武德殿有免費導覽嗎？', answer: '木博館提供老城區館舍導覽資訊，假日與國定假日部分時段有定時導覽；集合位置和當期時間請以官方公告為準。' },
   },
   {
-    slug: 'daxi-history-hall', name: '大溪木藝生態博物館－大溪歷史館', english: 'Daxi History Hall', type: '日式宿舍群與地方史展館', district: '桃園市大溪區普濟路', stay: '建議 30–60 分鐘', image: 'https://travel.tycg.gov.tw/content/images/attractions/62945/1024x768_attractions-image-vwyffnfuvuupnet0cljw2w.jpg',
+    slug: 'daxi-history-hall', name: '大溪木藝生態博物館－大溪歷史館', english: 'Daxi History Hall', type: '日式宿舍群與地方史展館', district: '桃園市大溪區普濟路', stay: '建議 30–60 分鐘', image: '/images/nearby/daxi-history-hall.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/1370', mapQuery: '大溪木藝生態博物館 大溪歷史館 普濟路23號',
     address: '335 桃園市大溪區普濟路23號', hours: '館舍參觀時段以大溪木藝生態博物館公告為準；通常週一休館', admission: '常設展館一般免費，特別活動依公告', contact: '大溪木藝生態博物館 03-3888600',
     parking: '大溪舊城道路狹窄；可先查橋頭、月眉及其他合法停車場，將館舍群安排為步行參觀。',
@@ -148,7 +148,7 @@ export const nearbyAttractions = [
     faqFocus: { question: '大溪歷史館與武德殿是同一個館嗎？', answer: '兩者同屬大溪木藝生態博物館系統，但位於不同建築，各有展示主題；適合安排為同一趟老城步行行程。' },
   },
   {
-    slug: 'daxi-guild-hall', name: '大溪木藝生態博物館－大溪公會堂', english: 'Daxi Guild Hall', type: '日治時期公會堂', district: '桃園市大溪區普濟路', stay: '建議 20–45 分鐘', image: 'https://travel.tycg.gov.tw/content/images/attractions/67334/1024x768_attractions-image-jkerznmljkegquv2dp1pmq.jpg',
+    slug: 'daxi-guild-hall', name: '大溪木藝生態博物館－大溪公會堂', english: 'Daxi Guild Hall', type: '日治時期公會堂', district: '桃園市大溪區普濟路', stay: '建議 20–45 分鐘', image: '/images/nearby/daxi-guild-hall.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/389', mapQuery: '大溪木藝生態博物館 大溪公會堂',
     address: '335 桃園市大溪區普濟路大溪公會堂館區（入口依官方地圖）', hours: '館舍實際參觀時段依大溪木藝生態博物館公告；通常週一休館', admission: '館舍一般免費參觀，特殊活動另依公告', contact: '大溪木藝生態博物館 03-3888600',
     parking: '老城核心區不建議臨停；先查橋頭、月眉或市街合法停車場，再步行至普濟路。',
@@ -169,7 +169,7 @@ export const nearbyAttractions = [
     faqFocus: { question: '公會堂和大溪老街可以一起逛嗎？', answer: '可以安排為一段老城散步；公會堂是獨立文化場域，不代表與老街商家有相同營業時間，參觀前請核對館方公告。' },
   },
   {
-    slug: 'lee-teng-fang-house', name: '李騰芳古宅', english: 'Lee Teng-Fang Historic Residence', type: '國定古蹟古宅', district: '桃園市大溪區月眉里', stay: '建議 45–75 分鐘', image: 'https://images.squarespace-cdn.com/content/v1/5438e2c6e4b0b18459a8ca06/1494755139595-WRDQZFPBKF70YALF10T4/GTJ-2017-0514-14.jpg?format=1000w',
+    slug: 'lee-teng-fang-house', name: '李騰芳古宅', english: 'Lee Teng-Fang Historic Residence', type: '國定古蹟古宅', district: '桃園市大溪區月眉里', stay: '建議 45–75 分鐘', image: '/images/nearby/lee-teng-fang-house.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/411', mapQuery: '李騰芳古宅 桃園市大溪區月眉路198巷32號',
     address: '335 桃園市大溪區月眉路198巷32號', hours: '週二至週日 09:00–17:00，週一休館；特殊節日依公告', admission: '免費參觀', contact: '大溪木藝生態博物館 03-3888600',
     parking: '官方旅遊資訊列有古宅停車及無障礙設施；抵達前應核對實際入口、車位與假日導引。',
@@ -190,7 +190,7 @@ export const nearbyAttractions = [
     faqFocus: { question: '李騰芳古宅假日有導覽嗎？', answer: '桃園官方遊程曾列出假日定時免費導覽，通常為上午與下午各一場；實際場次、集合點及預約方式請以木博館最新公告為準。' },
   },
   {
-    slug: 'wood-museum-hall-one', name: '大溪木藝生態博物館－壹號館', english: 'Daxi Wood Art Ecomuseum Hall No. 1', type: '木藝文化館舍', district: '桃園市大溪區中正路', stay: '建議 30–50 分鐘', image: 'https://travel.tycg.gov.tw/content/images/attractions/46427/1024x768_attractions-image-y8a7osvry0s0aldes35ecw.jpg',
+    slug: 'wood-museum-hall-one', name: '大溪木藝生態博物館－壹號館', english: 'Daxi Wood Art Ecomuseum Hall No. 1', type: '木藝文化館舍', district: '桃園市大溪區中正路', stay: '建議 30–50 分鐘', image: '/images/nearby/wood-museum-hall-one.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/994', mapQuery: '大溪木藝生態博物館 壹號館 桃園市大溪區中正路68號', address: '335 桃園市大溪區中正路68號',
     hours: '各館開放時間與休館日期依大溪木藝生態博物館公告，通常週一休館', admission: '一般免費參觀；活動與體驗依公告', contact: '大溪木藝生態博物館 03-3888600', parking: '先利用橋頭、月眉等合法停車場，再依老城步行路線前往中正路。',
     visitTips: '先閱讀館內旅遊與木藝導覽資訊，再以周邊歷史館、武德殿和大溪老街排半日路線。', experience: '從壹號館木造立面、斜瓦屋頂和格子窗看老屋修復，接著理解木藝如何成為大溪的地方文化主題。', lodging: '可在大溪老城選擇合法旅宿，將木博館館舍分成上午與午後走訪，注意各館休館時間。',
@@ -201,7 +201,7 @@ export const nearbyAttractions = [
     transit: '搭往大溪的公車至老城區後步行；自駕者先查外圍停車場與街區交通管制。', caution: '各館舍開放情形不一定相同，出發前應分別核對；勿觸碰老屋脆弱構件。', faqFocus: { question: '壹號館就是整座木藝生態博物館嗎？', answer: '不是。木博館由多處老城館舍組成，壹號館只是其中一站，還可走訪武德殿、歷史館、公會堂等地點。' },
   },
   {
-    slug: 'zhaiming-ancient-trail', name: '齋明寺古道', english: 'Zhaiming Temple Ancient Trail', type: '歷史石板古道', district: '桃園市大溪區齋明街', stay: '建議 40–90 分鐘', image: 'https://cdntwrunning.biji.co/800_f169284b14d4322e7612090f38e8c850.jpg',
+    slug: 'zhaiming-ancient-trail', name: '齋明寺古道', english: 'Zhaiming Temple Ancient Trail', type: '歷史石板古道', district: '桃園市大溪區齋明街', stay: '建議 40–90 分鐘', image: '/images/nearby/zhaiming-ancient-trail.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/403', mapQuery: '齋明寺古道 桃園市大溪區齋明街', address: '335 桃園市大溪區齋明街（古道入口請依專屬地圖）',
     hours: '戶外古道通行情形依天候、維護及現場公告；不宜於昏暗時段進入', admission: '步道一般免費通行', contact: '步道資訊可向桃園市政府觀光旅遊局查詢', parking: '先確認齋明街周邊合法停車位置及古道實際入口，勿占用居民出入道路。',
     visitTips: '石板階梯大小不一，建議穿防滑鞋、雨後放慢腳步，並先決定是否延伸至齋明寺或御成路古道。', experience: '沿石板步階與林蔭緩行，看大漢溪石材鋪砌的古道與寺院參拜路線如何沿地形展開。', lodging: '大溪舊城旅宿方便串聯老街；若以古道為早晨行程，需另外預留交通與步行時間。',
@@ -212,7 +212,7 @@ export const nearbyAttractions = [
     transit: '可先抵達大溪市區再依地圖轉乘或步行；古道入口與主公園並不相同，請獨立導航。', caution: '石階濕滑且有坡度，雨天、夜間及行動不便者應審慎評估；不擅入未開放支線。', faqFocus: { question: '齋明寺古道適合推嬰兒車嗎？', answer: '古道以石階與坡地為主，並非平坦無障礙步道；推嬰兒車或輪椅不宜把古道作為主要通行路線。' },
   },
   {
-    slug: 'lianzuoshan-guanyin-temple', name: '蓮座山觀音寺', english: 'Lianzuoshan Guanyin Temple', type: '歷史寺廟', district: '桃園市大溪區瑞安路', stay: '建議 40–70 分鐘', image: 'https://dguidedwalks.tw/sites/default/files/styles/large/public/listings-gallery/2021-06-04.jpg?itok=LScM000R',
+    slug: 'lianzuoshan-guanyin-temple', name: '蓮座山觀音寺', english: 'Lianzuoshan Guanyin Temple', type: '歷史寺廟', district: '桃園市大溪區瑞安路', stay: '建議 40–70 分鐘', image: '/images/nearby/lianzuoshan-guanyin-temple.webp',
     official: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/499', mapQuery: '蓮座山觀音寺 桃園市大溪區瑞安路二段48巷28號', address: '335 桃園市大溪區瑞安路二段48巷28號',
     hours: '寺院參拜與殿堂開放時段依寺方公告，節慶期間可能調整', admission: '一般參拜不收門票；個別服務依寺方公告', contact: '蓮座山觀音寺 03-3885674', parking: '依寺院入口及當地指標找合法停車空間，重要宗教節日需留意人潮與交通管制。',
     visitTips: '留意入寺階梯、山門及拜亭雕刻，保持安靜並尊重信眾；需進入殿堂拍攝前應詢問寺方。', experience: '由山門拾階而上，觀察龍飾、石雕、重簷拜亭與寺院高處的大漢溪谷視野。', lodging: '可從大溪老城出發安排寺廟與老街文化行程；住宿比較時需考慮寺廟位置與車程。',
