@@ -392,6 +392,22 @@ export const gallery = [
 
 export const topicPages = [
   {
+    id: 'directions', path: '/directions', navLabel: '怎麼去', eyebrow: '抵達方式', icon: 'route', breadcrumb: '交通與抵達',
+    image: '/images/park-entry.webp', title: '大溪河濱公園怎麼去？地址、開車入口、公車與步行指南',
+    description: '大溪河濱公園怎麼去？地址位於桃園市大溪區大鶯路60巷89弄75號。整理開車入口、停車場、公車轉步行、YouBike及大溪老街順遊路線。',
+    heading: '大溪河濱公園怎麼去？交通與入口指南',
+    lead: '第一次前往最重要的是確認大鶯路巷道入口；搭乘公車則須預留下車後的步行時間。此頁依不同交通方式整理行前檢查與抵達步驟。',
+    summary: '地址、開車入口、公車與步行接駁',
+  },
+  {
+    id: 'nearby', path: '/nearby', navLabel: '周邊景點', eyebrow: '探索大溪', icon: 'map', breadcrumb: '周邊景點與行程',
+    image: '/images/riverside-lawn.webp', title: '大溪河濱公園周邊景點｜大溪橋、老街、月眉一日遊',
+    description: '大溪河濱公園周邊景點行程：大溪橋、大溪老街、大溪中正公園、月眉觀光農業區及大溪月眉至龍潭三坑水岸綠廊，附交通與路線建議。',
+    heading: '大溪河濱公園周邊景點與半日、一日遊',
+    lead: '沿著大漢溪把公園、橋梁與大溪老街串在一起，也能延伸至月眉水岸景點。依同行者體力與交通方式決定停留點，不必把所有景點擠進同一天。',
+    summary: '大溪橋、老街、月眉水岸的順遊規劃',
+  },
+  {
     id: 'parking',
     path: '/parking',
     navLabel: '停車交通',

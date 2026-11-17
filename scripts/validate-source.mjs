@@ -30,6 +30,8 @@ const required = [
   'src/pages/parking.astro',
   'src/pages/bike.astro',
   'src/pages/facilities.astro',
+  'src/pages/directions.astro',
+  'src/pages/nearby.astro',
   'src/layouts/GuideLayout.astro',
   'src/components/Breadcrumbs.astro',
   'src/components/FaqList.astro',
@@ -207,9 +209,9 @@ for (const sectionId of ['weather', 'facilities', 'transport', 'bike']) {
   if (!ids.has(sectionId)) problems.push(`缺少主題區塊 id：${sectionId}`);
 }
 
-// 多頁架構：三個主題專頁各自成頁、靜態預渲染、使用共用版型，並互相內鏈。
+// 多頁架構：主題專頁各自成頁、靜態預渲染、使用共用版型，並互相內鏈。
 const topicPaths = [...siteSource.matchAll(/path:\s*'(\/[a-z-]+)'/g)].map((match) => match[1]);
-if (topicPaths.length !== 3) problems.push(`主題專區應為 3 個，實際設定 ${topicPaths.length} 個`);
+if (topicPaths.length !== 5) problems.push(`主題專區應為 5 個，實際設定 ${topicPaths.length} 個`);
 
 for (const topicPath of topicPaths) {
   const pageFile = join(root, `src/pages${topicPath}.astro`);
@@ -252,7 +254,7 @@ if (relativeFiles.has('src/pages/sitemap.xml.ts')) {
   problems.push('src/pages/sitemap.xml.ts 與 public/sitemap.xml 路徑衝突，請只保留其中一份');
 }
 notes.push('已確認品牌標題、Park 結構化資料、主題區塊與 301 轉址守衛');
-notes.push('已確認三個主題專頁、交叉內鏈、頁內目錄與 sitemap.xml');
+notes.push('已確認五個主題專頁、交叉內鏈、頁內目錄與 sitemap.xml');
 
 if (problems.length) {
   console.error('來源檢查失敗：');
