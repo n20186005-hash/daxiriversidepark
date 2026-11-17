@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import InfoLayout from '../layouts/InfoLayout.astro';
+import { googleRating, site } from '../data/site';
+---
+<InfoLayout title="評分與評論" lead="大溪河濱公園 Google 地圖公開評分資料與來源說明。">
+  <section class="soft-card rounded-3xl p-6 md:p-8">
+    <h2>Google 地圖評分快照</h2>
+    <p class="text-3xl font-black text-forest-950">★ {googleRating.score.toFixed(1)} / 5 · {googleRating.count.toLocaleString('zh-Hant-TW')} 則評論</p>
+    <p class="mt-3 text-slate-700">來源：{googleRating.source}；同步時間：{site.ratingSyncedAt}。此為當時記錄的公開資料，最新數字請以 Google 地圖為準。</p>
+    <p class="mt-3 text-slate-700">評論著作權歸原作者及 Google 地圖所有。本站不重製單條評論，也不將此快照當作即時評價。</p>
+    <p class="mt-4"><a href={googleRating.reviewsUrl} target="_blank" rel="noopener noreferrer">在 Google 地圖查看全部評論 ↗</a></p>
+  </section>
+</InfoLayout>

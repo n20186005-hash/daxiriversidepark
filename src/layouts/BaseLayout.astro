@@ -21,6 +21,7 @@ interface Props {
   faqs?: readonly { question: string; answer: string }[];
   /** 首屏要預先載入的圖片；沒有首屏大圖時傳 false。 */
   preloadImage?: string | false;
+  attraction?: { name: string; type: string; district: string; mapUrl: string; officialUrl: string };
 }
 
 const {
@@ -36,6 +37,7 @@ const {
   ],
   faqs = siteFaqs,
   preloadImage = '/images/hero-playground.jpg',
+  attraction,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.canonical).toString();
@@ -60,16 +62,16 @@ const jsonLd = [
     '@context': 'https://schema.org',
     // 同時標示 TouristAttraction 與 Park：Park 是 Google 對地標型公園最直接的型別，
     // 有利於與 Google 地圖上的「大溪河濱公園」商家頁綁定。
-    '@type': ['TouristAttraction', 'Park'],
-    '@id': attractionId,
-    name: site.fullName,
-    alternateName: [site.shortName, 'Daxi Riverside Park', `${site.city} ${site.fullName}`],
+    '@type': attraction ? 'TouristAttraction' : ['TouristAttraction', 'Park'],
+    '@id': attraction ? `${canonical}#attraction` : attractionId,
+    name: attraction?.name ?? site.fullName,
+    alternateName: attraction ? [] : [site.shortName, 'Daxi Riverside Park', `${site.city} ${site.fullName}`],
     description,
-    url: site.canonical,
+    url: attraction ? canonical : site.canonical,
     image: [ogImage],
     isAccessibleForFree: true,
     publicAccess: true,
-    address: {
+    address: attraction ? undefined : {
       '@type': 'PostalAddress',
       streetAddress: site.streetAddress,
       addressLocality: site.city,
@@ -77,22 +79,22 @@ const jsonLd = [
       postalCode: site.postalCode,
       addressCountry: site.countryCode,
     },
-    geo: {
+    geo: attraction ? undefined : {
       '@type': 'GeoCoordinates',
       latitude: site.coordinates.lat,
       longitude: site.coordinates.lng,
     },
-    openingHoursSpecification: {
+    openingHoursSpecification: attraction ? undefined : {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       opens: '00:00',
       closes: '23:59',
     },
-    touristType: ['親子家庭', '自行車旅客', '野餐旅客', '攝影旅客'],
-    hasMap: site.mapsUrl,
-    sameAs: [site.mapsUrl, site.tourismUrl, site.officialUrl, site.placeUrl],
+    touristType: attraction ? undefined : ['親子家庭', '自行車旅客', '野餐旅客', '攝影旅客'],
+    hasMap: attraction?.mapUrl ?? site.mapsUrl,
+    sameAs: attraction ? [attraction.officialUrl] : [site.mapsUrl, site.tourismUrl, site.officialUrl, site.placeUrl],
     // 對應搜尋需求最高的設施查詢（停車場、YouBike、遊具、野餐草地）。
-    amenityFeature: [
+    amenityFeature: attraction ? undefined : [
       { '@type': 'LocationFeatureSpecification', name: '停車場', value: true },
       { '@type': 'LocationFeatureSpecification', name: '公共廁所', value: true },
       { '@type': 'LocationFeatureSpecification', name: '無障礙廁所', value: true },
@@ -106,9 +108,10 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Place',
-    '@id': `${site.canonical}#place`,
-    name: site.fullName,
-    address: {
+    '@id': attraction ? `${canonical}#place` : `${site.canonical}#place`,
+    name: attraction?.name ?? site.fullName,
+    description: attraction?.district,
+    address: attraction ? { '@type': 'PostalAddress', addressRegion: site.state, addressCountry: site.countryCode } : {
       '@type': 'PostalAddress',
       streetAddress: site.streetAddress,
       addressLocality: site.city,
@@ -116,7 +119,7 @@ const jsonLd = [
       postalCode: site.postalCode,
       addressCountry: site.countryCode,
     },
-    geo: {
+    geo: attraction ? undefined : {
       '@type': 'GeoCoordinates',
       latitude: site.coordinates.lat,
       longitude: site.coordinates.lng,
@@ -159,13 +162,20 @@ const jsonLd = [
 <!doctype html>
 <html lang="zh-Hant-TW">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.ga4Id}`}></script>
     <script is:inline define:vars={{ ga4Id: site.ga4Id }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', ga4Id);
+      // 非必要分析工具僅在訪客明確同意後載入。
+      try {
+        if (localStorage.getItem('daxi-analytics-consent') === 'granted') {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', ga4Id);
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga4Id);
+          document.head.appendChild(script);
+        }
+      } catch (_) { /* 訪客封鎖儲存時，不啟用分析 */ }
     </script>
 
     <meta charset="UTF-8" />

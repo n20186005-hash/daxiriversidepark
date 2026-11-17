@@ -28,17 +28,17 @@ export const site = {
   reviewsUrl: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
   officialUrl: 'https://www.taoyuan-parkgo.tw/parks/44',
   tourismUrl: 'https://travel.tycg.gov.tw/zh-tw/travel/attraction/598',
-  updatedAt: '2026-10-12',
-  ratingSyncedAt: '2026 年 10 月',
+  updatedAt: '2026-11-17',
+  ratingSyncedAt: '2026 年 11 月',
   imageCopyright: '本網站所展示的所有圖片產權及版權均歸原攝影者所有。',
-  ratingSourceNote: '同步自 Google 地圖使用者評論，同步時間 2026 年 10 月；著作權歸原作者與 Google 地圖所有。',
+  ratingSourceNote: '同步自 Google 地圖使用者評論，同步時間 2026 年 11 月；著作權歸原作者與 Google 地圖所有。',
 } as const;
 
 export const googleRating = {
   score: 4.4,
-  count: 5392,
+  count: 5417,
   source: 'Google 地圖使用者評論',
-  syncedAt: '2026 年 10 月',
+  syncedAt: '2026 年 11 月',
   reviewsUrl: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
   placeUrl:
     'https://www.google.com/maps/place/%E5%A4%A7%E6%BA%AA%E6%B2%B3%E6%BB%A8%E5%85%AC%E5%9B%AD/@24.8932601,121.2810631,17z/data=!3m1!4b1!4m6!3m5!1s0x34681817b55e18cd:0x337e23894ae95017!8m2!3d24.8932601!4d121.283638!16s%2Fg%2F11gz9mcb1?entry=ttu&g_ep=EgoyMDI2MDcyNi4wIKXMDSoASAFQAw%3D%3D',
@@ -52,7 +52,7 @@ export const nearbyLandmarks = [
 export const sources = [
   {
     label: '評分與評論',
-    detail: '同步自 Google 地圖使用者評論，同步時間 2026 年 10 月；著作權歸原作者與 Google 地圖所有。',
+    detail: '同步自 Google 地圖使用者評論，同步時間 2026 年 11 月；著作權歸原作者與 Google 地圖所有。',
     url: 'https://maps.app.goo.gl/9PMZq1NvsTNJeERK6',
     linkLabel: '在 Google 地圖查看全部評論',
   },
@@ -315,7 +315,7 @@ export const faqs = [
   },
   {
     question: 'Google 地圖上的評分與評論數是最新資料嗎？',
-    answer: '本站同步自 Google 地圖使用者評論（2026 年 10 月），資料按月對照 Google 地圖商家頁。評論內容僅作來源說明，不嵌入搜尋引擎結構化資料，避免版本不一致問題。',
+    answer: '本站同步自 Google 地圖使用者評論（2026 年 11 月），資料按月對照 Google 地圖商家頁。評論內容僅作來源說明，不嵌入搜尋引擎結構化資料，避免版本不一致問題。',
   },
   {
     question: '停車場收費嗎？入口好找嗎？',
@@ -391,6 +391,22 @@ export const gallery = [
  * ------------------------------------------------------------------ */
 
 export const topicPages = [
+  {
+    id: 'directions', path: '/directions', navLabel: '怎麼去', eyebrow: '抵達方式', icon: 'route', breadcrumb: '交通與抵達',
+    image: '/images/park-entry.webp', title: '大溪河濱公園怎麼去？地址、開車入口、公車與步行指南',
+    description: '大溪河濱公園怎麼去？地址位於桃園市大溪區大鶯路60巷89弄75號。整理開車入口、停車場、公車轉步行、YouBike及大溪老街順遊路線。',
+    heading: '大溪河濱公園怎麼去？交通與入口指南',
+    lead: '第一次前往最重要的是確認大鶯路巷道入口；搭乘公車則須預留下車後的步行時間。此頁依不同交通方式整理行前檢查與抵達步驟。',
+    summary: '地址、開車入口、公車與步行接駁',
+  },
+  {
+    id: 'nearby', path: '/nearby', navLabel: '周邊景點', eyebrow: '探索大溪', icon: 'map', breadcrumb: '周邊景點與行程',
+    image: '/images/riverside-lawn.webp', title: '大溪河濱公園周邊景點｜大溪橋、老街、月眉一日遊',
+    description: '大溪河濱公園周邊景點行程：大溪橋、大溪老街、大溪中正公園、月眉觀光農業區及大溪月眉至龍潭三坑水岸綠廊，附交通與路線建議。',
+    heading: '大溪河濱公園周邊景點與半日、一日遊',
+    lead: '沿著大漢溪把公園、橋梁與大溪老街串在一起，也能延伸至月眉水岸景點。依同行者體力與交通方式決定停留點，不必把所有景點擠進同一天。',
+    summary: '大溪橋、老街、月眉水岸的順遊規劃',
+  },
   {
     id: 'parking',
     path: '/parking',

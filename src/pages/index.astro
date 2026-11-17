@@ -20,8 +20,8 @@ import {
   parkingGuide,
   quickFacts,
   site,
-  sources,
 } from '../data/site';
+import { nearbyAttractions } from '../data/nearby-attractions';
 
 const suitable = [
   '帶幼兒或小學生到戶外放電',
@@ -75,7 +75,7 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
           大溪河濱公園（{site.city}，{site.state}，{site.country}）
         </p>
         <p class="mt-7 max-w-2xl text-base font-medium leading-8 text-white/[.80] sm:text-lg md:text-xl md:leading-9">
-          Welcome to <strong class="text-white">{site.fullName}</strong>，widely recognized as the central <strong class="text-white">{site.shortName}</strong>. Located in the heart of <strong class="text-white">{site.city}</strong>, <strong class="text-white">{site.state}</strong>, <strong class="text-white">{site.country}</strong>, this destination serves as a primary hub for travelers visiting the region.一次掌握海盜船遊具、兒童單車場、落羽松、野餐草地、停車入口與大溪老街順遊方式。
+          位於桃園市大溪區大漢溪畔的<strong class="text-white">大溪河濱公園</strong>，適合安排親子遊戲、河岸散步與草地野餐。這份指南一次整理海盜船遊具、兒童單車場、落羽松、停車入口與大溪老街順遊方式，方便出發前按需求規劃。
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-white px-6 text-base font-black text-forest-950 shadow-2xl transition hover:-translate-y-1">
@@ -171,7 +171,7 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
       <TopicNav
         includeHome={false}
         title="主題專區：停車、單車與園區設施"
-        lead="這三組需求是本站在搜尋結果中最常被點擊的部分，因此各自獨立成頁把細節做深：停車場與入口導航、租腳踏車與騎乘路線、園區設施與遊具。"
+        lead="依據搜尋需求整理停車、單車、園區設施、交通到達方式及大溪周邊行程；每個主題都有獨立的實用指南。"
       />
     </div>
   </section>
@@ -707,82 +707,17 @@ const reviewsLabel = `${googleRating.count.toLocaleString('zh-Hant-TW')} 則評�
           </article>
         ))}
       </div>
-    </div>
-  </section>
-
-  <section id="sources" class="section-pad bg-sand-100">
-    <div class="container-page">
-      <div class="reveal max-w-3xl">
-        <p class="eyebrow">資料來源</p>
-        <h2 class="section-title">本站評分、圖片與資料的引用來源</h2>
-        <p class="section-lead">
-          為避免 Google 評論政策風險與維持資料透明，本頁所有評分、評論、圖片與事實資訊皆於下方逐項註明出處與最新同步時間，方便你交叉查核。
-        </p>
+      <div class="reveal mt-12 flex flex-wrap items-end justify-between gap-5">
+        <div><p class="eyebrow">景點深度導覽</p><h3 class="text-2xl font-black text-forest-950">延伸探索大溪五處人文與水岸景點</h3><p class="mt-2 text-sm leading-7 text-slate-600">每處都有歷史、管理主體、特色、路線、拍攝建議與專屬地圖。</p></div>
+        <a href="/nearby" class="btn-primary">查看全部周邊景點</a>
       </div>
-
-      <div class="reveal mt-12 grid gap-5 md:grid-cols-2">
-        {sources.map((src) => (
-          <article class="soft-card rounded-[1.6rem] p-6">
-            <div class="flex items-start gap-4">
-              <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-moss-100 text-forest-800"><Icon name="info" size={20} /></span>
-              <div class="min-w-0">
-                <h3 class="text-lg font-black tracking-tight text-forest-950">{src.label}</h3>
-                <p class="mt-2 text-sm leading-7 text-slate-600">{src.detail}</p>
-                <a href={src.url} target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm font-black text-forest-800 underline-offset-4 hover:underline">
-                  {src.linkLabel} <Icon name="external" size={14} />
-                </a>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div class="reveal mt-10 grid gap-4 lg:grid-cols-2">
-        <div class="rounded-[1.4rem] border border-cypress-500/[.20] bg-[#fff8f4] p-5 sm:p-6">
-          <p class="flex items-center gap-2 text-sm font-black text-cypress-600"><Icon name="camera" size={18} /> 圖片版權</p>
-          <p class="mt-3 text-sm leading-7 text-slate-700">
-            {site.imageCopyright}
-          </p>
-          <p class="mt-3 text-xs leading-6 text-slate-500">
-            圖片來源：桃園市政府工務局「樂桃園 P@rk Go」公園頁面（<a class="underline-offset-2 hover:underline" href={site.officialUrl} target="_blank" rel="noopener noreferrer">taoyuan-parkgo.tw/parks/44</a>），依「桃園市政府暨所屬機關網站政府網站資料開放宣告」使用；本站僅做尺寸壓縮與版面裁切。
-          </p>
-        </div>
-
-        <div class="rounded-[1.4rem] border border-forest-800/[.12] bg-white p-5 sm:p-6">
-          <p class="flex items-center gap-2 text-sm font-black text-forest-800"><Icon name="info" size={18} /> 評價來源</p>
-          <p class="mt-3 text-sm leading-7 text-slate-700">
-            評分與評論數同步自谷歌地圖（Google Maps）使用者評論 · {site.ratingSyncedAt}。
-          </p>
-          <p class="mt-3 text-xs leading-6 text-slate-500">
-            {site.ratingSourceNote}
-          </p>
-          <a href={googleRating.reviewsUrl} target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm font-black text-forest-800 underline-offset-4 hover:underline">
-            在 Google 地圖查看全部評論 <Icon name="external" size={14} />
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {nearbyAttractions.map((place) => (
+          <a href={`/attractions/${place.slug}`} class="reveal soft-card group overflow-hidden rounded-[1.5rem] transition hover:-translate-y-1">
+            <img src={place.image} alt={`${place.name}實景照片`} loading="lazy" width="1024" height="768" class="aspect-[4/3] w-full object-cover" />
+            <div class="p-4"><h4 class="font-black leading-6 text-forest-950">{place.name}</h4><p class="mt-2 text-xs leading-5 text-slate-600">{place.subtitle}</p><span class="mt-3 inline-block text-xs font-black text-forest-800">閱讀景點專頁 →</span></div>
           </a>
-        </div>
-      </div>
-
-      <div class="reveal mt-10 overflow-hidden rounded-[1.6rem] border border-forest-800/[.12] bg-white shadow-[0_18px_48px_rgba(24,49,40,.06)]">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.138408483746!2d121.28106307537193!3d24.89326007790791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34681817b55e18cd%3A0x337e23894ae95017!2z5aSn5rqq5rKz5ruo5YWs5Zut!5e0!3m2!1szh-CN!2stw!4v1785298572973!5m2!1szh-CN!2stw"
-          width="600"
-          height="450"
-          style="border:0;"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          title="大溪河濱公園 Google 地圖"
-          class="block h-[320px] w-full sm:h-[420px]"
-        ></iframe>
-      </div>
-
-      <div class="reveal mt-6 text-center">
-        <p class="text-sm leading-7 text-slate-600">
-          For official updates and regional tourism information, visit
-          <a class="font-black text-forest-800 underline-offset-4 hover:underline" href={site.tourismUrl} target="_blank" rel="noopener noreferrer">
-            {site.country} / {site.state} 官方觀光導覽網
-          </a>。
-        </p>
+        ))}
       </div>
     </div>
   </section>

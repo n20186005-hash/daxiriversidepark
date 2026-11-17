@@ -1,0 +1,13 @@
+---
+export const prerender = true;
+import InfoLayout from '../layouts/InfoLayout.astro';
+import { site } from '../data/site';
+---
+<InfoLayout title="圖片來源與版權" lead="說明本站景點照片、來源與著作權資訊。">
+  <section class="soft-card rounded-3xl p-6 md:p-8">
+    <h2>圖片版權</h2>
+    <p>{site.imageCopyright}</p>
+    <p class="mt-3">首頁園區圖片來源包括桃園市政府工務局「<a href={site.officialUrl} target="_blank" rel="noopener noreferrer">樂桃園 P@rk Go</a>」公園頁面；本站僅做尺寸壓縮與版面裁切。</p>
+    <p class="mt-3">另可參考「<a href="https://publicart.tyccc.gov.tw/open/" target="_blank" rel="noopener noreferrer">桃園市政府暨所屬機關網站政府網站資料開放宣告</a>」。周邊景點照片的來源另在各景點頁面標註，不能將主園區照片來源視為所有照片的來源。</p>
+  </section>
+</InfoLayout>

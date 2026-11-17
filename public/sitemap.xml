@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://daxiriversidepark.com/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -24,4 +24,34 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://daxiriversidepark.com/directions</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://daxiriversidepark.com/nearby</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url><loc>https://daxiriversidepark.com/attractions/daxi-bridge</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/daxi-old-street</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/zhongzheng-park</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/yuemei-wetland</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/waterfront-greenway</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/wude-hall</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/daxi-history-hall</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/daxi-guild-hall</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/lee-teng-fang-house</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/wood-museum-hall-one</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/zhaiming-ancient-trail</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/attractions/lianzuoshan-guanyin-temple</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/sources</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/reviews</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/image-credits</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/privacy-policy</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/terms-of-service</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://daxiriversidepark.com/cookie-settings</loc><lastmod>2026-11-17</lastmod></url>
 </urlset>

@@ -1,0 +1,39 @@
+---
+export const prerender = true;
+import InfoLayout from '../layouts/InfoLayout.astro';
+---
+<InfoLayout title="Cookie 設定" lead="你可以決定是否啟用非必要的網站分析。最後更新：2026 年 11 月 17 日。">
+  <section class="soft-card rounded-3xl p-6 md:p-8">
+    <h2>必要功能</h2>
+    <p>必要的瀏覽器儲存與快取協助頁面運作、保留你的 Cookie 選擇及提供基本安全性。此類功能無法在本站個別關閉，但可透過瀏覽器設定清除。</p>
+  </section>
+  <section class="soft-card rounded-3xl p-6 md:p-8">
+    <h2>分析 Cookie（選擇性）</h2>
+    <p>同意後才載入 Google Analytics 4，用於彙總瀏覽量、使用裝置與頁面成效；拒絕時本站不主動載入分析程式。</p>
+    <p id="consent-status" class="mt-4 font-bold text-forest-950" aria-live="polite">正在讀取選擇…</p>
+    <div class="mt-5 flex flex-wrap gap-3">
+      <button type="button" id="consent-accept" class="btn-primary">同意分析 Cookie</button>
+      <button type="button" id="consent-reject" class="rounded-full border border-forest-800 px-6 py-3 text-sm font-black text-forest-800">拒絕／撤回同意</button>
+    </div>
+    <p class="mt-4 text-sm text-slate-600">選擇會儲存於這台裝置的瀏覽器中。變更後重新載入頁面生效。若已同意並希望清除既有第三方 Cookie，還可使用瀏覽器清除網站資料功能。</p>
+  </section>
+  <section class="soft-card rounded-3xl p-6 md:p-8"><h2>第三方地圖與其他服務</h2><p>當你主動開啟 Google 地圖或外部來源網站時，第三方可能依各自政策使用 Cookie。詳情請參閱 <a href="/privacy-policy">隱私政策</a>。</p></section>
+</InfoLayout>
+<script>
+  const key = 'daxi-analytics-consent';
+  const status = document.querySelector<HTMLElement>('#consent-status');
+  const show = () => {
+    try {
+      if (status) status.textContent = localStorage.getItem(key) === 'granted' ? '目前狀態：已同意分析 Cookie' : '目前狀態：未同意分析 Cookie';
+    } catch { if (status) status.textContent = '瀏覽器未允許儲存偏好；分析功能不會啟用。'; }
+  };
+  document.querySelector('#consent-accept')?.addEventListener('click', () => {
+    try { localStorage.setItem(key, 'granted'); } catch { /* 忽略儲存限制 */ }
+    show(); window.location.reload();
+  });
+  document.querySelector('#consent-reject')?.addEventListener('click', () => {
+    try { localStorage.setItem(key, 'denied'); } catch { /* 忽略儲存限制 */ }
+    show(); window.location.reload();
+  });
+  show();
+</script>

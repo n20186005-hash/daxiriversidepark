@@ -8,7 +8,7 @@ import { site, topicPages } from '../data/site';
 
 interface Props {
   /** 對應 site.ts 的 topicPages id。 */
-  topicId: 'parking' | 'bike' | 'facilities';
+  topicId: 'parking' | 'bike' | 'facilities' | 'directions' | 'nearby';
   /** 本頁專屬 FAQ，會同時輸出到頁面與 FAQPage 結構化資料。 */
   faqs: readonly { question: string; answer: string }[];
   /** 頁內目錄，對應各段落標題的 id。 */
@@ -81,7 +81,7 @@ const breadcrumbs = [
         <TopicNav
           current={topic.id}
           title="接著看其他主題"
-          lead="三個專頁分別對應停車、單車與設施需求；總覽首頁另有園區地圖、親子玩法與順遊行程。"
+          lead="從停車、單車、設施到交通方式及周邊行程，按需要閱讀不同指南；首頁保留完整園區總覽。"
         />
       </div>
     </div>

@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+import GuideLayout from '../layouts/GuideLayout.astro';
+import { site } from '../data/site';
+
+const faqs = [
+  { question: '大溪河濱公園的確切地址是什麼？', answer: '桃園市大溪區大鶯路60巷89弄75號。入口在巷道內，建議使用大溪河濱公園的 Google 地圖地點頁導航。' },
+  { question: '搭公車可以直接到園區門口嗎？', answer: '公車並非每班都直達園區入口，請先以桃園公車動態查詢當日往大溪的路線、下車站與步行路線，並預留步行時間。' },
+  { question: '大溪河濱公園適合從老街走過去嗎？', answer: '兩個地點可以安排在同一趟行程，但實際步行路線與時間取決於所選出入口、橋梁和同行者體力。請在地圖查看當日步行路線，勿直接跨越車道或堤岸。' },
+  { question: '騎 YouBike 前要先確認什麼？', answer: '先查詢官方站點即時可借與可還數，並確認路段是否適合同行者，兒童騎乘建議自備合適車輛與安全護具。' },
+];
+const toc = [{ id: 'address', label: '地址與入口' }, { id: 'drive', label: '開車' }, { id: 'transit', label: '公車' }, { id: 'cycling', label: '單車與步行' }, { id: 'before', label: '出發提醒' }];
+---
+<GuideLayout topicId="directions" faqs={faqs} toc={toc}>
+  <section id="address" class="section-pad bg-sand-50"><div class="container-page grid gap-8 lg:grid-cols-2 lg:items-center">
+    <div><p class="eyebrow">先確認目的地</p><h2 class="section-title">入口不是大溪老街</h2><p class="section-lead mt-4">大溪河濱公園位於大漢溪左岸，地址為<strong>{site.address}</strong>。導航時選擇公園本身的地點頁，而非只輸入「大溪」或「大溪橋」，以免停在不同的河岸入口。</p><a class="btn-primary mt-6" href={site.reviewsUrl} target="_blank" rel="noopener noreferrer">開啟公園 Google 地圖</a></div>
+    <img src="/images/park-entry.webp" alt="大溪河濱公園入口實景" loading="lazy" width="960" height="640" class="w-full rounded-[2rem] object-cover shadow-xl" />
+  </div></section>
+  <section id="drive" class="section-pad bg-white"><div class="container-page"><p class="eyebrow">自行開車</p><h2 class="section-title">從大鶯路巷道進入</h2><div class="mt-8 grid gap-5 md:grid-cols-3">{[
+    ['1. 設定正確終點', '以大溪河濱公園專屬地圖地點導航，確認目的地在大鶯路60巷89弄一帶。'],
+    ['2. 接近入口時減速', '最後一段為巷道，注意行人、自行車、轉彎及現場標誌，勿依導航逆向或違規迴轉。'],
+    ['3. 停放合法車位', '園區有停車空間，但收費、車位與活動日管制可能變動；請以入口現場公告為準。'],
+  ].map(([title, detail]) => <article class="soft-card rounded-3xl p-6"><h3 class="text-xl font-black text-forest-950">{title}</h3><p class="mt-3 leading-7 text-slate-600">{detail}</p></article>)}</div><p class="mt-8 text-sm leading-7">需要查看停車費、替代車位與假日停車建議？<a class="font-bold text-forest-800 underline" href="/parking">閱讀停車場完整攻略</a>。</p></div></section>
+  <section id="transit" class="section-pad bg-sand-100"><div class="container-page"><p class="eyebrow">大眾運輸</p><h2 class="section-title">搭公車到大溪，再確認步行入口</h2><p class="section-lead mt-4">桃園市政府的觀光資料與公車資訊可作為規劃起點。不同路線可能停靠不同站位，且並非直接進入公園；請以公車動態系統查詢當日路線、班次、站名及回程末班車。</p><ol class="mt-7 list-decimal space-y-3 pl-6 text-slate-700 leading-8"><li>在<a class="font-bold text-forest-800 underline" href="https://ebus.tycg.gov.tw/ebus/" target="_blank" rel="noopener noreferrer">桃園公車動態系統</a>查詢往大溪區的班次與停靠站。</li><li>在<a class="font-bold text-forest-800 underline" href={site.reviewsUrl} target="_blank" rel="noopener noreferrer">Google 地圖步行規劃</a>核對站牌至公園入口的可通行道路。</li><li>預留轉乘與步行時間；夏季攜水、遮陽用品，雨天留意河濱積水公告。</li></ol></div></section>
+  <section id="cycling" class="section-pad bg-white"><div class="container-page grid gap-8 lg:grid-cols-2 lg:items-center"><div><p class="eyebrow">自行車及步行</p><h2 class="section-title">沿水岸慢遊，先核對路線</h2><p class="section-lead mt-4">公園有自行車訓練場及河濱騎乘環境，另設公共自行車站。YouBike 的車輛數和空柱會變動，想帶兒童車或親子車時應另作準備。從大溪老街或大溪橋過來，須依地圖選擇合法步行或騎乘道路。</p><a class="btn-primary mt-6" href="/bike">租腳踏車與騎乘指南</a></div><img src="/images/parking-youbike.webp" alt="大溪河濱公園停車與公共自行車區實景" loading="lazy" width="960" height="640" class="w-full rounded-[2rem] object-cover shadow-xl" /></div></section>
+  <section id="before" class="section-pad bg-sand-50"><div class="container-page"><p class="eyebrow">行前核對</p><h2 class="section-title">這些資訊容易變動</h2><ul class="mt-7 grid gap-4 md:grid-cols-2">{['河濱公園遇豪雨、颱風或溪水上漲，可能封閉部分區域。','活動日的入口動線、停車管制與收費須以當日告示為準。','公共自行車須確認即時站點、可借車輛與還車空柱。','夜間路段照明及園區維護情況不一，親子遊玩優先選白天。'].map(item => <li class="soft-card rounded-2xl p-5 leading-7 text-slate-700">{item}</li>)}</ul><p class="mt-7 text-sm text-slate-600">資料參考：<a class="underline" href={site.officialUrl} target="_blank" rel="noopener noreferrer">桃園市政府公園資料</a>、<a class="underline" href={site.tourismUrl} target="_blank" rel="noopener noreferrer">桃園觀光導覽網</a>（2026-11-17 查核）。</p></div></section>
+</GuideLayout>
