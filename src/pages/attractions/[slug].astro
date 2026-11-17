@@ -10,7 +10,13 @@ export function getStaticPaths() {
 }
 const { place } = Astro.props;
 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.mapQuery)}`;
-const imageSource = place.slug === 'wude-hall' ? '桃園市政府大溪木藝生態博物館' : place.slug === 'lee-teng-fang-house' ? 'Josh Ellis Photography' : '桃園市政府觀光旅遊局公開景點圖像';
+const imageSources: Record<string, string> = {
+  'wude-hall': '桃園市政府大溪木藝生態博物館',
+  'lee-teng-fang-house': 'Josh Ellis Photography',
+  'zhaiming-ancient-trail': '健行筆記／步道紀錄',
+  'lianzuoshan-guanyin-temple': '步佈台灣數位走讀',
+};
+const imageSource = imageSources[place.slug] ?? '桃園市政府觀光旅遊局公開景點圖像';
 const others = nearbyAttractions.filter((item) => item.slug !== place.slug).slice(0, 4);
 const faqs = [
   { question: `${place.name}位於哪裡？`, answer: `地址或路線範圍：${place.address}。建議利用該景點專屬 Google 地圖連結確認入口與步行動線。` },
