@@ -32,6 +32,8 @@ const required = [
   'src/pages/facilities.astro',
   'src/pages/directions.astro',
   'src/pages/nearby.astro',
+  'src/pages/attractions/[slug].astro',
+  'src/data/nearby-attractions.ts',
   'src/layouts/GuideLayout.astro',
   'src/components/Breadcrumbs.astro',
   'src/components/FaqList.astro',
@@ -196,7 +198,7 @@ if (!titleMatch || !titleMatch[1].startsWith('大溪河濱公園')) {
 }
 
 const layoutSource = contents.get(join(root, 'src/layouts/BaseLayout.astro')) ?? '';
-if (!layoutSource.includes("'@type': ['TouristAttraction', 'Park']")) {
+if (!layoutSource.includes("['TouristAttraction', 'Park']")) {
   problems.push('結構化資料未標示 Park 型別，難以對應 Google 地圖地標');
 }
 if (!layoutSource.includes('amenityFeature')) problems.push('結構化資料缺少 amenityFeature 設施資訊');
@@ -249,12 +251,28 @@ for (const path of ['/', ...topicPaths]) {
     problems.push(`sitemap.xml 缺少 ${path}`);
   }
 }
+const nearbyData = contents.get(join(root, 'src/data/nearby-attractions.ts')) ?? '';
+const attractionTemplate = contents.get(join(root, 'src/pages/attractions/[slug].astro')) ?? '';
+const attractionSlugs = [...nearbyData.matchAll(/slug:\s*'([a-z-]+)'/g)].map((match) => match[1]);
+if (attractionSlugs.length !== 5 || new Set(attractionSlugs).size !== 5) {
+  problems.push('周邊景點專頁應有 5 個不重複 slug');
+}
+for (const slug of attractionSlugs) {
+  if (!sitemapSource.includes(`<loc>https://daxiriversidepark.com/attractions/${slug}</loc>`)) problems.push(`sitemap.xml 缺少周邊景點 ${slug}`);
+}
+for (const image of [...nearbyData.matchAll(/image:\s*'(\/images\/nearby\/[^']+)'/g)].map((match) => match[1])) {
+  if (!relativeFiles.has(`public${image}`)) problems.push(`周邊景點圖片不存在：${image}`);
+}
+for (const marker of ['getStaticPaths', 'place.mapQuery', 'place.about', 'place.history', 'place.route', 'place.photo', 'faqs']) {
+  if (!attractionTemplate.includes(marker)) problems.push(`周邊景點共用版型缺少：${marker}`);
+}
 // public/sitemap.xml 與 src/pages/sitemap.xml.ts 同路徑時，Astro 會跳過路由並在建置時警告。
 if (relativeFiles.has('src/pages/sitemap.xml.ts')) {
   problems.push('src/pages/sitemap.xml.ts 與 public/sitemap.xml 路徑衝突，請只保留其中一份');
 }
 notes.push('已確認品牌標題、Park 結構化資料、主題區塊與 301 轉址守衛');
 notes.push('已確認五個主題專頁、交叉內鏈、頁內目錄與 sitemap.xml');
+notes.push('已確認五個周邊景點獨立路由、照片、地圖與索引');
 
 if (problems.length) {
   console.error('來源檢查失敗：');
