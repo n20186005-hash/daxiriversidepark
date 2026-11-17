@@ -10,6 +10,7 @@ export function getStaticPaths() {
 }
 const { place } = Astro.props;
 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.mapQuery)}`;
+const imageSource = place.slug === 'wude-hall' ? '桃園市政府大溪木藝生態博物館' : place.slug === 'lee-teng-fang-house' ? 'Josh Ellis Photography' : '桃園市政府觀光旅遊局公開景點圖像';
 const others = nearbyAttractions.filter((item) => item.slug !== place.slug).slice(0, 4);
 const faqs = [
   { question: `${place.name}位於哪裡？`, answer: `地址或路線範圍：${place.address}。建議利用該景點專屬 Google 地圖連結確認入口與步行動線。` },
@@ -33,7 +34,7 @@ const faqs = [
       <p class="mt-6 text-sm leading-7 text-white/75">{place.address} · {place.stay}</p>
       <div class="mt-5 flex flex-wrap gap-2 text-xs font-black"><span class="rounded-full bg-white/15 px-3 py-2">{place.admission}</span><span class="rounded-full bg-white/15 px-3 py-2">{place.hours}</span><a class="rounded-full bg-white/15 px-3 py-2 underline" href={mapUrl} target="_blank" rel="noopener noreferrer">Google 地圖評分與最新評論</a></div>
       <div class="mt-8 flex flex-wrap gap-3"><a href={mapUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-6 font-black text-forest-950"><Icon name="pin" size={18}/> 查看專屬 Google 地圖</a><a href="#route" class="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/30 px-6 font-black">建議路線</a></div>
-      <p class="mt-6 text-xs text-white/60">圖片：桃園市政府觀光旅遊局公開景點圖像 · <a class="underline" href={place.official} target="_blank" rel="noopener noreferrer">查看原始景點資料</a></p>
+      <p class="mt-6 text-xs text-white/60">圖片：{imageSource} · <a class="underline" href={place.official} target="_blank" rel="noopener noreferrer">查看景點資料</a></p>
     </div>
   </section>
 
@@ -58,7 +59,7 @@ const faqs = [
 
   <section id="route" class="section-pad bg-white"><div class="container-page"><p class="eyebrow">按順序慢遊</p><h2 class="section-title">建議遊覽路線</h2><ol class="mt-8 grid gap-4 md:grid-cols-3">{place.route.map((step,i)=><li class="soft-card rounded-3xl p-6"><span class="grid size-10 place-items-center rounded-full bg-forest-800 font-black text-white">{i+1}</span><p class="mt-5 leading-8 text-slate-700">{step}</p></li>)}</ol></div></section>
 
-  <section id="photos" class="section-pad bg-sand-100"><div class="container-page grid gap-8 lg:grid-cols-2"><div><p class="eyebrow">實景與拍攝機位</p><h2 class="section-title">看見{place.name}的細節</h2><img src={place.image} alt={`${place.name}專屬景點實景`} width="1024" height="768" loading="lazy" class="mt-7 w-full rounded-[2rem] object-cover shadow-lg" /><p class="mt-3 text-xs text-slate-500">實景圖來源：桃園市政府觀光旅遊局官方景點資料。圖片權利歸原權利人。</p></div><div><h3 class="text-2xl font-black text-forest-950">拍照建議</h3><ul class="mt-5 space-y-4">{place.photo.map((tip,i)=><li class="soft-card rounded-2xl p-5 leading-7 text-slate-700"><strong class="mr-2 text-forest-800">{i+1}.</strong>{tip}</li>)}</ul><h3 class="mt-8 text-xl font-black">遊覽須知</h3><p class="mt-3 leading-8 text-slate-700">{place.caution} 尊重當地居民、景觀及公共設施，並自備飲水、遮陽或雨具。</p><h3 class="mt-8 text-xl font-black">住宿與用餐</h3><p class="mt-3 leading-8 text-slate-700">{place.lodging}</p><p class="mt-3 leading-8 text-slate-700">若需要用餐，可按當天行程選擇大溪老街或龍潭聚落的合法營業店家，先核對實際營業時段。</p></div></div></section>
+  <section id="photos" class="section-pad bg-sand-100"><div class="container-page grid gap-8 lg:grid-cols-2"><div><p class="eyebrow">實景與拍攝機位</p><h2 class="section-title">看見{place.name}的細節</h2><img src={place.image} alt={`${place.name}專屬景點實景`} width="1024" height="768" loading="lazy" class="mt-7 w-full rounded-[2rem] object-cover shadow-lg" /><p class="mt-3 text-xs text-slate-500">實景圖來源：{imageSource}。圖片權利歸原權利人。</p></div><div><h3 class="text-2xl font-black text-forest-950">拍照建議</h3><ul class="mt-5 space-y-4">{place.photo.map((tip,i)=><li class="soft-card rounded-2xl p-5 leading-7 text-slate-700"><strong class="mr-2 text-forest-800">{i+1}.</strong>{tip}</li>)}</ul><h3 class="mt-8 text-xl font-black">遊覽須知</h3><p class="mt-3 leading-8 text-slate-700">{place.caution} 尊重當地居民、景觀及公共設施，並自備飲水、遮陽或雨具。</p><h3 class="mt-8 text-xl font-black">住宿與用餐</h3><p class="mt-3 leading-8 text-slate-700">{place.lodging}</p><p class="mt-3 leading-8 text-slate-700">若需要用餐，可按當天行程選擇大溪老街或龍潭聚落的合法營業店家，先核對實際營業時段。</p></div></div></section>
 
   <section id="reviews" class="section-pad bg-white"><div class="container-page grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><p class="eyebrow">遊客評價</p><h2 class="section-title">參考 Google 地圖最新評論</h2><p class="section-lead mt-4">各景點的評分與評論數持續變動，建議在出發前透過景點專屬 Google 地圖頁查看最新評價、評論筆數與旅客照片，特別留意近期的施工、停車及通行回報。</p></div><a class="btn-primary" href={mapUrl} target="_blank" rel="noopener noreferrer">查看{place.name}評價</a></div></section>
 
