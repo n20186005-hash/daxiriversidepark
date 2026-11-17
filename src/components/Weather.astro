@@ -210,6 +210,14 @@ const adviceCards = [
 </section>
 
 <script>
+  type ForecastDay = { label: string; weekday: string; short: string; text: string; max: number; min: number; precipProb: number; kind: string };
+  type ForecastPayload = {
+    ok: boolean; updatedAt: string; alertsEnabled: boolean; warnings: string[];
+    now: { temp: number; feelsLike: number; text: string; kind: string };
+    today: { min: number; max: number; windText: string; precipProb: number; uvText: string; sunrise: string; sunset: string };
+    days: ForecastDay[];
+    advice: { summary?: string; risks?: string[]; outfit?: string[]; plans?: string[]; items?: string[] };
+  };
   const root = document.querySelector('[data-weather]');
 
   if (root instanceof HTMLElement) {
@@ -225,25 +233,25 @@ const adviceCards = [
     const daysList = root.querySelector('[data-weather-days]');
     const dayTemplate = root.querySelector('[data-weather-day-template]');
 
-    const round = (value) => Math.round(Number(value) || 0);
+    const round = (value: number) => Math.round(Number(value) || 0);
 
-    const setField = (name, value) => {
+    const setField = (name: string, value: string) => {
       const node = root.querySelector(`[data-weather-field="${name}"]`);
       if (node) node.textContent = value;
     };
 
-    const setMetric = (name, value) => {
+    const setMetric = (name: string, value: string) => {
       const node = root.querySelector(`[data-weather-metric="${name}"]`);
       if (node) node.textContent = value;
     };
 
-    const makeIcon = (kind) => {
+    const makeIcon = (kind: string) => {
       const source = root.querySelector(`[data-weather-icon="${kind}"] svg`);
       return source ? source.cloneNode(true) : null;
     };
 
     /** 依條件決定顯示哪些項目；不符條件的內容不會出現在畫面上。 */
-    const fillList = (key, values) => {
+    const fillList = (key: string, values: string[] | undefined) => {
       const list = root.querySelector(`[data-weather-list="${key}"]`);
       if (!list) return 0;
       const entries = Array.isArray(values) ? values.filter((value) => typeof value === 'string' && value) : [];
@@ -266,17 +274,17 @@ const adviceCards = [
       return entries.length;
     };
 
-    const renderDays = (days) => {
+    const renderDays = (days: ForecastDay[]) => {
       if (!(daysList instanceof HTMLElement) || !(dayTemplate instanceof HTMLTemplateElement)) return;
       daysList.textContent = '';
       if (!Array.isArray(days)) return;
 
       days.forEach((day) => {
-        const fragment = dayTemplate.content.cloneNode(true);
+        const fragment = dayTemplate.content.cloneNode(true) as DocumentFragment;
         const item = fragment.querySelector('li');
         if (!item) return;
 
-        const set = (key, value) => {
+        const set = (key: string, value: string) => {
           const node = item.querySelector(`[data-day="${key}"]`);
           if (node) node.textContent = value;
         };
@@ -299,7 +307,7 @@ const adviceCards = [
       });
     };
 
-    const render = (data) => {
+    const render = (data: ForecastPayload) => {
       const warnings = Array.isArray(data.warnings) ? data.warnings : [];
       const advice = data.advice || {};
 
@@ -342,7 +350,7 @@ const adviceCards = [
       setMetric('uv', data.today.uvText || '--');
       setMetric('sun', `${data.today.sunrise || '--'}／${data.today.sunset || '--'}`);
 
-      ['outfit', 'plans', 'items'].forEach((key) => {
+      (['outfit', 'plans', 'items'] as const).forEach((key) => {
         const count = fillList(key, advice[key]);
         const card = root.querySelector(`[data-advice-key="${key}"]`);
         if (card instanceof HTMLElement) card.hidden = count === 0;
