@@ -12,9 +12,12 @@ const { place } = Astro.props;
 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.mapQuery)}`;
 const others = nearbyAttractions.filter((item) => item.slug !== place.slug).slice(0, 4);
 const faqs = [
-  { question: `${place.name}位於哪裡？`, answer: `${place.name}位於${place.district}。建議利用該景點專屬 Google 地圖連結確認入口與步行動線。` },
+  { question: `${place.name}位於哪裡？`, answer: `地址或路線範圍：${place.address}。建議利用該景點專屬 Google 地圖連結確認入口與步行動線。` },
   { question: `${place.name}需要安排多久？`, answer: `${place.stay}是行程規劃建議，並非官方規定；依交通、同行者與現場情況調整。` },
+  { question: `${place.name}需要門票嗎？何時開放？`, answer: `${place.admission}。${place.hours}。出發前仍應核對現場公告。` },
   { question: `${place.name}適合怎麼安排交通？`, answer: place.transit },
+  { question: `前往${place.name}如何安排停車？`, answer: place.parking },
+  place.faqFocus,
   { question: `前往${place.name}需要留意什麼？`, answer: place.caution },
 ];
 ---
@@ -34,12 +37,12 @@ const faqs = [
     </div>
   </section>
 
+  <section id="about" class="section-pad bg-white"><div class="container-page grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center"><div><p class="eyebrow">管理主體與歷史定位</p><h2 class="section-title">關於{place.name}</h2><p class="section-lead mt-5 max-w-4xl">{place.about}</p><p class="mt-5 leading-8 text-slate-700">{place.history}</p><p class="mt-5 text-sm text-slate-600">管理與景點資訊參考：<a class="font-bold text-forest-800 underline" href={place.official} target="_blank" rel="noopener noreferrer">桃園市政府官方旅遊資料</a>（2026-11-17 查核）。</p></div><div class="rounded-[2rem] bg-moss-100 p-8"><h3 class="text-xl font-black text-forest-950">管理與出行提醒</h3><p class="mt-4 leading-8 text-slate-700">{place.contact}。開放、維護與道路管制可能涉及不同單位，現場公告優先。</p><a href={place.official} target="_blank" rel="noopener noreferrer" class="mt-6 inline-block font-black text-forest-800 underline">查看官方景點資訊</a></div></div></section>
+
   <section id="discover" class="section-pad bg-sand-50"><div class="container-page grid gap-10 lg:grid-cols-[1.15fr_.85fr]">
     <div><p class="eyebrow">探索景點</p><h2 class="section-title">走進{place.name}</h2><p class="section-lead mt-5">{place.intro}</p><p class="mt-5 leading-8 text-slate-700">{place.experience}</p><h3 class="mt-8 text-xl font-black text-forest-950">遊覽建議</h3><p class="mt-3 leading-8 text-slate-700">{place.visitTips}</p><p class="mt-3 leading-8 text-slate-700">{place.caution} 建議穿著好走的鞋、留意天氣與照明，並先使用專屬地圖檢查當日出入口。</p></div>
     <div class="soft-card rounded-[2rem] p-7"><h3 class="text-2xl font-black text-forest-950">景區特色</h3><ul class="mt-5 space-y-4">{place.highlights.map((point, i) => <li class="flex gap-3"><span class="grid size-9 shrink-0 place-items-center rounded-xl bg-forest-800 font-black text-white">{i+1}</span><span class="pt-1 font-bold leading-7 text-slate-700">{point}</span></li>)}</ul></div>
   </div></section>
-
-  <section id="about" class="section-pad bg-white"><div class="container-page"><p class="eyebrow">管理主體與歷史定位</p><h2 class="section-title">關於{place.name}</h2><p class="section-lead mt-5 max-w-4xl">{place.about}</p><p class="mt-5 text-sm text-slate-600">管理與景點資訊參考：<a class="font-bold text-forest-800 underline" href={place.official} target="_blank" rel="noopener noreferrer">桃園市政府官方旅遊資料</a>（2026-11-17 查核）。</p></div></section>
 
   <section id="basics" class="section-pad bg-sand-100"><div class="container-page"><p class="eyebrow">出發前先看</p><h2 class="section-title">基本資料</h2><dl class="mt-8 grid gap-3 md:grid-cols-2">{[
     ['景點名稱',place.name],['英文名稱',place.english],['景點類型',place.type],['完整位置／地址',place.address],['建議停留',place.stay],['入場費用',place.admission],['開放時間',place.hours],['聯絡／管理查詢',place.contact],
@@ -51,7 +54,7 @@ const faqs = [
 
   <section id="map" class="section-pad bg-white"><div class="container-page grid gap-8 lg:grid-cols-2"><div><p class="eyebrow">路線地圖</p><h2 class="section-title">{place.name}專屬地圖</h2><p class="section-lead mt-4">地址／路線起點：{place.address}。使用景點名稱與地點資訊搜尋，避免誤導至主公園。若出現多個入口，請對照官方景點資訊選擇實際通道。</p><div class="mt-6 flex flex-wrap gap-3"><a class="btn-primary" href={mapUrl} target="_blank" rel="noopener noreferrer">開啟 Google Maps</a><a class="btn-primary" href={place.official} target="_blank" rel="noopener noreferrer">查看官方資料</a></div></div><div class="rounded-[2rem] bg-moss-100 p-7"><h3 class="text-xl font-black text-forest-950">抵達前核對</h3><ol class="mt-5 list-decimal space-y-4 pl-6 leading-8 text-slate-700"><li>確認目的地是「{place.name}」。</li><li>核對入口、道路通行及停車位置。</li><li>留意回程車班、天候和開放時間。</li></ol></div></div></section>
 
-  <section id="culture" class="section-pad bg-sand-50"><div class="container-page"><p class="eyebrow">發現魅力</p><h2 class="section-title">歷史、建築與文化觀察</h2><div class="mt-8 grid gap-5 md:grid-cols-2"><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">歷史背景</h3><p class="mt-4 leading-8 text-slate-700">{place.history}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">建築與地景特色</h3><p class="mt-4 leading-8 text-slate-700">{place.structure}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">文化與地方生活</h3><p class="mt-4 leading-8 text-slate-700">{place.about}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">核心遊覽體驗</h3><p class="mt-4 leading-8 text-slate-700">{place.experience}</p></article></div></div></section>
+  <section id="culture" class="section-pad bg-sand-50"><div class="container-page"><p class="eyebrow">發現魅力</p><h2 class="section-title">歷史、建築與文化觀察</h2><div class="mt-8 grid gap-5 md:grid-cols-2"><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">歷史背景</h3><p class="mt-4 leading-8 text-slate-700">{place.history}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">建築與地景特色</h3><p class="mt-4 leading-8 text-slate-700">{place.structure}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">文化與地方生活</h3><p class="mt-4 leading-8 text-slate-700">{place.culture}</p></article><article class="soft-card rounded-3xl p-7"><h3 class="text-xl font-black text-forest-950">核心遊覽體驗</h3><p class="mt-4 leading-8 text-slate-700">{place.experience}</p></article></div></div></section>
 
   <section id="route" class="section-pad bg-white"><div class="container-page"><p class="eyebrow">按順序慢遊</p><h2 class="section-title">建議遊覽路線</h2><ol class="mt-8 grid gap-4 md:grid-cols-3">{place.route.map((step,i)=><li class="soft-card rounded-3xl p-6"><span class="grid size-10 place-items-center rounded-full bg-forest-800 font-black text-white">{i+1}</span><p class="mt-5 leading-8 text-slate-700">{step}</p></li>)}</ol></div></section>
 
